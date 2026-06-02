@@ -9,7 +9,7 @@ const combatHighlightsSchema = new mongoose.Schema({
         type: Number,
         min: 0,
         validate: { // should not exceed maxHitPoints
-            validator: function(value) {
+            validator: (value) => {
                 if(this.maxHitPoint != undefined && this.maxHitPoint != null)
                     return value <= this.maxHitPoint;
                 return true; // flexibility in case user only wants to keep track of currHP

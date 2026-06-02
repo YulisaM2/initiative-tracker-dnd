@@ -1,40 +1,40 @@
 var db = require('../../models')
 
-exports.getChars = function(req, res){
+exports.getChars = (req, res) => {
     db.Character.find()
-    .then(function(chars){
+    .then((chars) => {
         res.json(chars);
     })
-    .catch(function(err){
+    .catch((err) => {
         res.send(err);
     })
 };
 
-exports.createChar = function(req, res){
+exports.createChar = (req, res) => {
     db.Character.create({
         genDetails: {
             name: req.body.name
         }
     })
-    .then(function(newChar){
+    .then((newChar) => {
         res.status.apply(201).json(newChar);
     })
-    .catch(function(err){
+    .catch((err) => {
         res.send(err);
     })
 };
 
-exports.getChar = function(req, res){
+exports.getChar = (req, res) => {
     db.Character.findById(req.params.charId)
-    .then(function(foundChar){
+    .then((foundChar) => {
         res.json(foundChar);
     })
-    .catch(function(err){
+    .catch((err) => {
         res.send(err);
     })
 };
 
-exports.updateCharName = function(req, res){
+exports.updateCharName = (req, res) => {
     db.Character.findOneAndUpdate({
         _id: req.params.charId
     }, {
@@ -45,36 +45,36 @@ exports.updateCharName = function(req, res){
     { 
         new : true // respond with updatedChar
     })
-    .then(function(updatedChar){
+    .then((updatedChar) => {
         res.json(updatedChar);
     })
-    .catch(function(err){
+    .catch((err) =>{
         res.send(err);
     })
 };
 
-exports.deleteChar = function(req,res){
+exports.deleteChar = (req,res) => {
     db.Character.deleteOne({
         _id: req.params.charId
     })
-    .then(function(){
+    .then(() => {
         res.json({
             message: "Deleted"
         })
     })
-    .catch(function(err){
+    .catch((err) => {
         res.send(err);
     })
 };
 
-exports.deleteAllChars = function(req,res){
+exports.deleteAllChars = (req,res) => {
     db.Character.deleteMany({})
-    .then(function(){
+    .then(() => {
         res.json({
             message: "Db emptied"
         })
     })
-    .catch(function(err){
+    .catch((err) => {
         res.send(err);
     })
 };
