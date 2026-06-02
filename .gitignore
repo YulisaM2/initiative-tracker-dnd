@@ -1,3 +1,5 @@
+src/server/data/
+
 # Logs
 logs
 *.log

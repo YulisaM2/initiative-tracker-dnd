@@ -14,7 +14,7 @@ const combatHighlightsSchema = new mongoose.Schema({
                     return value <= this.maxHitPoint;
                 return true; // flexibility in case user only wants to keep track of currHP
             },
-            message: props => `currHitPoint (${props.value}) should be < maxHitPoint (${this.maxHitPoint}) !`
+            message: props => `currHitPoint (${props.value}) should be <= maxHitPoint (${this.maxHitPoint}) !`
         }
     },
     maxHitPoint: {

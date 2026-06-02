@@ -4,15 +4,20 @@
   "description": "Database and route logic for application.",
   "license": "MIT",
   "author": "Yulisa M.",
+  "type": "commonjs",
+  "main": "index.js",
   "scripts": {
     "test": "jest"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",
+    "dotenv": "^17.4.2",
     "jest": "^30.4.2",
     "mongodb-memory-server": "^11.2.0"
   },
   "dependencies": {
+    "body-parser": "^2.2.2",
+    "express": "^5.2.1",
     "mongoose": "^9.6.3"
   }
 }
