@@ -1,4 +1,12 @@
 {
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Database and route logic for application.",
+  "license": "MIT",
+  "author": "Yulisa M.",
+  "scripts": {
+    "test": "jest"
+  },
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "jest": "^30.4.2",
