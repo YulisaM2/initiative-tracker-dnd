@@ -1,43 +1,43 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const { combatHighlightsSchema } = require('./combat-highlights.js');
-const { genDetailsSchema } = require('./gen-details.js');
-const { raceSchema } = require('./race.js');
-const { charClassSchema } = require('./char-class.js');
-const { bonusSchema } = require('./bonus.js');
-const { conditionSchema } = require('./condition.js');
+const { combatHighlightsSchema } = require("./combat-highlights.js");
+const { genDetailsSchema } = require("./gen-details.js");
+const { raceSchema } = require("./race.js");
+const { charClassSchema } = require("./char-class.js");
+const { bonusSchema } = require("./bonus.js");
+const { conditionSchema } = require("./condition.js");
 
 // Following Monster Manual Stat Block Overview as guide
 const characterSchema = new mongoose.Schema({
-    bonus: { // Consumables that benefit character
-        type: [bonusSchema]
+  bonus: {
+    // Consumables that benefit character
+    type: [bonusSchema],
+  },
+  combatHighlights: {
+    type: combatHighlightsSchema,
+  },
+  condition: {
+    type: [conditionSchema],
+  },
+  genDetails: {
+    type: genDetailsSchema,
+    required: true,
+  },
+  position: {
+    x: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: 0,
     },
-    combatHighlights: {
-        type: combatHighlightsSchema
+    y: {
+      type: Number,
+      required: true,
+      min: 0,
+      default: 0,
     },
-    condition: {
-        type: [conditionSchema]
-    },
-    genDetails: {
-        type: genDetailsSchema,
-        required: true
-    },
-    position : {
-        x: {
-            type: Number,
-            required: true,
-            min: 0,
-            default: 0
-        },
-        y: {
-           type: Number,
-            required: true,
-            min: 0,
-            default: 0 
-        }
-    }
-
+  },
 });
 
-const Character = mongoose.model('character', characterSchema);
+const Character = mongoose.model("character", characterSchema);
 module.exports = { Character };

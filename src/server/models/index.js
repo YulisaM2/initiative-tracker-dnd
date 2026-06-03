@@ -1,2 +1,2 @@
-const { Character } = require('./character.js');
-module.exports.Character =  Character;
+const { Character } = require("./character.js");
+module.exports.Character = Character;
