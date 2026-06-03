@@ -14,6 +14,10 @@ afterAll(async () => await dbHandler.closeDatabase());
 
 describe('Character Model Unit Tests', () => {
     it('should create a character with NAME ONLY & save succesfully', async() => {
+        const defaultPos = {
+            x: 0,
+            y: 0
+        }
         const testName = 'Alfie';
         const testGenDet = new GenDetails({
             name: testName,
@@ -28,12 +32,36 @@ describe('Character Model Unit Tests', () => {
         expect(savedCharacter.bonus).toEqual([]);
         expect(savedCharacter.combatHighlights).toBeUndefined();
         expect(savedCharacter.condition).toEqual([]);
+        expect(savedCharacter.position).toMatchObject(defaultPos);
         expect(savedCharacter.genDetails.toObject()).toMatchObject(testGenDet.toObject());
        
     });
 
      it('should fail if genDetails is missing', async() => {
         const invalidCharacter = new Character();
+        
+        let err;
+        try {
+            await invalidCharacter.save();
+        } catch(error) {
+            err = error;
+        }
+
+        expect(err).toBeInstanceOf(mongoose.Error.ValidationError);
+     });
+
+     it('should fail if position < 0', async() => {
+        const testName = 'Alfie';
+        const testGenDet = new GenDetails({
+            name: testName,
+            });
+        const invalidCharacter = new Character({
+            genDetails: testGenDet,
+            position: {
+                x: -1,
+                y: -2
+            } 
+        });
         
         let err;
         try {

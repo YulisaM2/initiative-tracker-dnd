@@ -22,6 +22,21 @@ const characterSchema = new mongoose.Schema({
         type: genDetailsSchema,
         required: true
     },
+     position : {
+        x: {
+            type: Number,
+            required: true,
+            min: 0,
+            default: 0
+        },
+        y: {
+           type: Number,
+            required: true,
+            min: 0,
+            default: 0 
+        }
+    }
+
 });
 
 const Character = mongoose.model('character', characterSchema);
