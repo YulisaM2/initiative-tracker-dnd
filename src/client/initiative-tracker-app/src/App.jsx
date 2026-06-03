@@ -1,7 +1,7 @@
 import CardPage from './pages/CardsPage';
 
 function App() {
-  return (
+    return (
     <div id="app">
       <CardPage />
     </div>
