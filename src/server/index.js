@@ -1,7 +1,7 @@
 const path = require('path');
 require('dotenv').config({ 
     override: true,
-    path: path.resolve(__dirname, '../../.env')
+    path: path.resolve(__dirname, '../.env')
  });
 
 const express = require('express'),
@@ -38,5 +38,5 @@ app.get('/', (req, res) =>{
 });
 
 // Routes
-const charRoutes = require('./routes/character.js');
+const charRoutes = require('./routes/character');
 app.use('/api/character', charRoutes);

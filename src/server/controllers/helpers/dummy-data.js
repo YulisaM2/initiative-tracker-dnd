@@ -9,7 +9,7 @@ const createCharWithName = (newName) => {
 }
 exports.fillDb = async (req, res) => {
     try {
-        await Promise.all([ // Make sure db is populated first.
+        await Promise.all([ // Make sure db is populated first
 
             createCharWithName('Alfie'),
             createCharWithName('Kaia'),
