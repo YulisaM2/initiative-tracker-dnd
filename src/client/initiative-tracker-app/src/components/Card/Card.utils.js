@@ -38,7 +38,6 @@ const mouseMove = (e, mouseStartPos, cardRef, setPosition) => {
 export const bringToFront = (selectedCard) => {
     selectedCard.style.zIndex = 999;
     Array.from(document.getElementsByClassName("card")).forEach((card) =>{
-        console.log(card + " " + card !== selectedCard);
         if(card !== selectedCard)
             card.style.zIndex = selectedCard.style.zIndex - 1; // Make sure it's under desired card
     });

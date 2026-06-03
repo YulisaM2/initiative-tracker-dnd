@@ -12,7 +12,7 @@ module.exports.connect = async () => {
 
 // Drop database, close connection, and stop the server
 module.exports.closeDatabase = async () => {
-    if (mongod) {
+    if(mongod) {
         await mongoose.connection.dropDatabase();
         await mongoose.connection.close();
         await mongod.stop();

@@ -46,7 +46,7 @@ const CardsPage = () => {
       {
         // Render the cards with the character's data
         characters.map((char) => (
-          <Card key={ char._id } card={ char } />
+          <Card key={ char._id } char={ char } setChars={ setCharacters }/>
         ))
       }
     </div>

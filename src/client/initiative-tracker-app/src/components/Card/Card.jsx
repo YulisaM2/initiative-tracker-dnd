@@ -1,11 +1,10 @@
 import { useRef, useEffect, useState } from 'react';
+
 import { mouseDown, autoGrow, bringToFront } from '../Card/Card.utils';
+import { DeleteButton } from '../../components/DeleteButton';
 
-import Trash from '../../icons/Trash';
-
-const Card = ({ card }) => {
-  console.log(card.genDetails.name);
-  const body = card.genDetails.name;
+const Card = ({ char, setChars }) => {
+  const body = char.genDetails.name;
   const color = "#FEE5FD";
 
   // Setup for drag and drop
@@ -32,7 +31,7 @@ const Card = ({ card }) => {
     onFocus={() => {bringToFront(cardRef.current)}}
     >
       <div className='card-header' style={{ backgroundColor: "#FED0FD" }}>
-        <Trash />
+        <DeleteButton className='test' id={ char._id} setChars= { setChars }/>
       </div>
       <div className='card-body'>
         <textarea ref={ textAreaRef } 
