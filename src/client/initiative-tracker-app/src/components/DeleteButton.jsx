@@ -3,7 +3,7 @@ import Trash from '../icons/Trash';
 import { CardContext } from '../context/CardContext';
 
 export const DeleteButton = ({ id }) => {
-    const { setChars } = useContext(CardContext);
+    const { setCharacters } = useContext(CardContext);
     // Check that intention wasn't to delete, but to drag card
     // Consists of :
     // 1. Validating if there was movement in a short period of time 
@@ -56,7 +56,7 @@ export const DeleteButton = ({ id }) => {
             }   
 
             // Update the characters list by removing the deleted character
-            setChars(prevChars => prevChars.filter(char => char._id !== id));
+            setCharacters(prevChars => prevChars.filter(character => character._id !== id));
         } catch (error) {
             console.error('Error deleting character:', error);
         }

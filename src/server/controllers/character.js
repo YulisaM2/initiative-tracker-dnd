@@ -34,23 +34,40 @@ exports.getChar = (req, res) => {
     })
 };
 
-exports.updateCharName = (req, res) => {
-    db.Character.findOneAndUpdate({
-        _id: req.params.charId
-    }, {
-        genDetails: {
-            name: req.body.name
+exports.updateChar = (req, res) => {
+    // extract data to update
+    const { genDetails , position } = req.body;
+    const toUpdate = {};
+
+    if (genDetails){
+        // TODO: add other fields
+        if(genDetails.name !== undefined)
+            toUpdate['genDetails.name'] = genDetails.name;
+    }
+
+    if (position){
+        if (position.x !== undefined) {
+            toUpdate['position.x'] = position.x;
         }
-    },
-    { 
-        new : true // respond with updatedChar
-    })
-    .then((updatedChar) => {
-        res.json(updatedChar);
-    })
-    .catch((err) =>{
-        res.send(err);
-    })
+        if (position.y !== undefined) {
+            toUpdate['position.y'] = position.y;
+        }
+    }
+
+    // Updating
+    db.Character.findOneAndUpdate(
+        { _id: req.params.charId },
+        { $set: toUpdate },
+        { 
+            new : true, // respond with updatedChar,
+            runValidators: true
+        })
+        .then((updatedChar) => {
+            res.json(updatedChar);
+        })
+        .catch((err) =>{
+            res.send(err);
+        })
 };
 
 exports.deleteChar = (req,res) => {

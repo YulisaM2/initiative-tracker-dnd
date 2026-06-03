@@ -5,8 +5,11 @@ export const CardContext = createContext();
 
 const CardProvider = ({ children }) => {
     // Populate the page with cards based on the characters in the db.
-    const [loading, setLoading] = useState(true);
     const [characters, setCharacters] = useState([]);
+    const [selectedCharacter, setSelectedCharacter] = useState(null);
+
+    // Generic states
+    const [loading, setLoading] = useState(true);
     const [err, setError] = useState(null);
 
     useEffect(() => {
@@ -15,7 +18,7 @@ const CardProvider = ({ children }) => {
         async function loadCharacters() {
         try {
             // Ping db
-            const response = await fetch(import.meta.env.VITE_API_URL, { signal: abortController.signal });
+            const response = await fetch(import.meta.env.VITE_API_CHAR_URL, { signal: abortController.signal });
             if(!response.ok) 
                 throw new Error(`HTTP error! status: ${response.status}`);
             
@@ -36,7 +39,12 @@ const CardProvider = ({ children }) => {
         return () => abortController.abort()
     }, []);
 
-    const contextData = { characters, setCharacters };
+    const contextData = { 
+        characters,
+        setCharacters,
+        selectedCharacter,
+        setSelectedCharacter
+    };
 
     return (
          <CardContext.Provider value={ contextData }>

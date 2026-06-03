@@ -22,7 +22,7 @@ const characterSchema = new mongoose.Schema({
         type: genDetailsSchema,
         required: true
     },
-     position : {
+    position : {
         x: {
             type: Number,
             required: true,

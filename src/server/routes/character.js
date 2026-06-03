@@ -15,7 +15,7 @@ router.route('/dummyData')
 
 router.route('/:charId')
     .get(controller.getChar)
-    .put(controller.updateCharName)
+    .patch(controller.updateChar)
     .delete(controller.deleteChar);
 
 module.exports = router;

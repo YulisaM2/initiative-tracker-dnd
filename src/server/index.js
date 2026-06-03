@@ -9,13 +9,19 @@ const express = require('express'),
     bodyParser = require('body-parser');
 
 // Middleware
-const cors = require('cors');
-app.use(cors());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {
     extended: true
 }));
+
+const cors = require('cors');
+console.log('Allowing CORS from ' + process.env.VITE_API_REQUESTS_URL + ' ' + process.env.VITE_API_CHAR_URL);
+app.use(cors({
+    origin: [process.env.VITE_API_REQUESTS_URL, process.env.VITE_API_CHAR_URL],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cache-Control', 'Pragma', 'Expires']
+    }
+));
 
 // Connecting to db
 const mongoose = require('mongoose');
