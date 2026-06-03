@@ -40,3 +40,6 @@ app.get('/', (req, res) =>{
 // Routes
 const charRoutes = require('./routes/character');
 app.use('/api/character', charRoutes);
+
+const cardRoutes = require('./routes/card');
+app.use('/api/card')

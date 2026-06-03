@@ -77,3 +77,13 @@ export const autoGrow = (textAreaRef) => {
     current.style.height = current.scrollHeight + "px";
 };
 
+
+// Update card position so that its location persists
+const updateCardPosition = async (id, newPos) => {
+    try {
+        
+    } catch(err){
+        console.log(err);
+    }
+}
+
