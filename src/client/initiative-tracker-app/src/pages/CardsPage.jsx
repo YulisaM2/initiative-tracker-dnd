@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from '../components/Card.jsx';
+import Card from '../components/Card/Card.jsx';
 
 import { dummyData as cards } from '../assets/dummyData.js';
 
