@@ -18,18 +18,39 @@ const mouseMove = (e, mouseStartPos, cardRef, setPosition) => {
     mouseStartPos.x = e.clientX;
     mouseStartPos.y = e.clientY;
 
+    // Limiting so card can not leave border of screen
+    const setNewOffset = (card, mouseMoveDir = { x: 0, y: 0 }) => {
+        const offsetLeft = card.offsetLeft - mouseMoveDir.x;
+        const offsetTop = card.offsetTop - mouseMoveDir.y;
+
+        return {
+            x: offsetLeft < 0 ? 0 : offsetLeft,
+            y: offsetTop < 0 ? 0 : offsetTop,
+        }
+    }
+
     // Update card position
-    setPosition(() => ({
-        x: cardRef.current.offsetLeft - mouseMoveDir.x,
-        y: cardRef.current.offsetTop - mouseMoveDir.y
-    }));
+    const newPosition = setNewOffset(cardRef.current, mouseMoveDir);
+    setPosition(newPosition);
 };
+
+// Updating z index so card can be viewed without obstructions
+export const bringToFront = (selectedCard) => {
+    selectedCard.style.zIndex = 999;
+    Array.from(document.getElementsByClassName("card")).forEach((card) =>{
+        console.log(card + " " + card !== selectedCard);
+        if(card !== selectedCard)
+            card.style.zIndex = selectedCard.style.zIndex - 1; // Make sure it's under desired card
+    });
+}
 
 export const mouseDown = (e, mouseStartPos, cardRef, setPosition) => {
     // Started clicking with mouse
     // This is start poisiton
     mouseStartPos.x = e.clientX;
     mouseStartPos.y = e.clientY;
+
+    bringToFront(cardRef.current);
 
     const handleMouseMove = (e) => {
         mouseMove(e, mouseStartPos, cardRef, setPosition);
@@ -56,4 +77,4 @@ export const autoGrow = (textAreaRef) => {
     // Set the new height
     current.style.height = current.scrollHeight + "px";
 };
-    
+

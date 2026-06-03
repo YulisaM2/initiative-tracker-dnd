@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { mouseDown, autoGrow } from '../Card/Card.utils';
+import { mouseDown, autoGrow, bringToFront } from '../Card/Card.utils';
 
 import Trash from '../../icons/Trash';
 
@@ -27,7 +27,8 @@ const Card = ({ card }) => {
       left: `${position.x}px`,
       top: `${position.y}px`,
     }}
-    onMouseDown={ (e) => mouseDown(e, mouseStartPos, cardRef, setPosition) }
+    onMouseDown={ (e) => mouseDown(e, mouseStartPos, cardRef, setPosition)}
+    onFocus={() => {bringToFront(cardRef.current)}}
     >
       <div className='card-header' style={{ backgroundColor: colors.colorHeader }}>
         <Trash />
