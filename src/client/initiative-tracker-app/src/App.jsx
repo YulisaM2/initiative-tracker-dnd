@@ -1,9 +1,12 @@
 import CardPage from './pages/CardsPage';
+import CardContext from './context/CardContext';
 
 function App() {
     return (
     <div id="app">
-      <CardPage />
+      <CardContext>
+        <CardPage />
+      </CardContext>
     </div>
   );
 }

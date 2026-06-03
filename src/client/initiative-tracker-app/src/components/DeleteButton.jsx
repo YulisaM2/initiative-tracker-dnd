@@ -1,7 +1,9 @@
-import { useRef } from 'react';
+import { useRef, useContext } from 'react';
 import Trash from '../icons/Trash';
+import { CardContext } from '../context/CardContext';
 
-export const DeleteButton = ({ id, setChars }) => {
+export const DeleteButton = ({ id }) => {
+    const { setChars } = useContext(CardContext);
     // Check that intention wasn't to delete, but to drag card
     // Consists of :
     // 1. Validating if there was movement in a short period of time 
