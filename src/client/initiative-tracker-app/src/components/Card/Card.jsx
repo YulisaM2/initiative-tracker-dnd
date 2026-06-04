@@ -11,7 +11,7 @@ const Card = ({ character, setCharacter }) => {
 	const [err, setError] = useState(null);
 	const keyUpTimer = useRef(null);
 
-	const body = character.genDetails.name;
+	const body = character.genDetails?.name || "";
 	const color = "#FEE5FD";
 
 	// Setup for drag and drop
@@ -25,6 +25,7 @@ const Card = ({ character, setCharacter }) => {
 	// So that we can use autoGrow on load (adjust size if prefilled db)
 	useEffect(() => {
 		autoGrow(textAreaRef);
+		bringToFront(cardRef.current);
 	}, []);
 
 	// For calculating and updating position of a card

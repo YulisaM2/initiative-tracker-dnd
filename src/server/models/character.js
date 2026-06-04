@@ -9,34 +9,39 @@ const { conditionSchema } = require("./condition.js");
 
 // Following Monster Manual Stat Block Overview as guide
 const characterSchema = new mongoose.Schema({
-  bonus: {
-    // Consumables that benefit character
-    type: [bonusSchema],
-  },
-  combatHighlights: {
-    type: combatHighlightsSchema,
-  },
-  condition: {
-    type: [conditionSchema],
-  },
-  genDetails: {
-    type: genDetailsSchema,
-    required: true,
-  },
-  position: {
-    x: {
-      type: Number,
-      required: true,
-      min: 0,
-      default: 0,
-    },
-    y: {
-      type: Number,
-      required: true,
-      min: 0,
-      default: 0,
-    },
-  },
+	bonus: {
+		// Consumables that benefit character
+		type: [bonusSchema],
+	},
+	combatHighlights: {
+		type: combatHighlightsSchema,
+	},
+	condition: {
+		type: [conditionSchema],
+	},
+	genDetails: {
+		type: genDetailsSchema,
+	},
+	position: {
+		x: {
+			type: Number,
+			required: true,
+			min: 0,
+			default: 0,
+		},
+		y: {
+			type: Number,
+			required: true,
+			min: 0,
+			default: 0,
+		},
+	},
+	role: {
+		type: String,
+		enum: {
+			values: ["Player", "NPC", "Antagonist"],
+		},
+	},
 });
 
 const Character = mongoose.model("character", characterSchema);
