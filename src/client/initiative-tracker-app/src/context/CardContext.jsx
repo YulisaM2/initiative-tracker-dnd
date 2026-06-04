@@ -32,6 +32,22 @@ const CardProvider = ({ children }) => {
 		loadCharacters();
 	}, []);
 
+	// To avoid accidents
+	// Intention is determined by selecting card and doing something with it
+	// If too much time passes, user focus potentially changed
+	// This will avoid triggering updates to that previous selection in that case
+	useEffect(() => {
+		if (!selectedCharacter) return;
+
+		const delay = 3000; // ms
+		const timer = setTimeout(() => {
+			setSelectedCharacter(null);
+		}, delay);
+
+		// Restart timer
+		return () => clearTimeout(timer);
+	}, [selectedCharacter]);
+
 	const contextData = {
 		characters,
 		setCharacters,
