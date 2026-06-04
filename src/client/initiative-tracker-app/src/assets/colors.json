@@ -1,0 +1,14 @@
+[
+	{
+		"id": "NPC",
+		"colorHeader": "#FFEFBE",
+		"colorBody": "#FFF5DF",
+		"colorText": "#18181A"
+	},
+	{
+		"id": "Player",
+		"colorHeader": "#AFDA9F",
+		"colorBody": "#BCDEAF",
+		"colorText": "#18181A"
+	}
+]
