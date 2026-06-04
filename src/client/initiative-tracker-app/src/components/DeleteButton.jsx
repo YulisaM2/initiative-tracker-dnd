@@ -51,10 +51,6 @@ export const DeleteButton = ({ id }) => {
 				`${import.meta.env.VITE_API_CHAR_URL}/${id}`,
 			);
 
-			if (!response.ok) {
-				throw new Error(`HTTP error! status: ${response.status}`);
-			}
-
 			// Update the characters list by removing the deleted character
 			setCharacters((prevChars) =>
 				prevChars.filter((character) => character._id !== id),

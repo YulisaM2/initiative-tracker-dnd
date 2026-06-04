@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
 
-import { autoGrow, bringToFront } from "../Card/Card.utils";
+import { autoGrow, bringToFront, getRoleColors } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/DeleteButton";
 import Spinner from "../../icons/Spinner";
 
@@ -12,7 +12,9 @@ const Card = ({ character, setCharacter }) => {
 	const keyUpTimer = useRef(null);
 
 	const body = character.genDetails?.name || "";
-	const color = "#FEE5FD";
+
+	// Setup for color updates
+	const colors = getRoleColors(character.role);
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -132,7 +134,7 @@ const Card = ({ character, setCharacter }) => {
 			className='card'
 			ref={cardRef}
 			style={{
-				backgroundColor: color,
+				backgroundColor: colors.colorBody,
 				left: `${position.x}px`,
 				top: `${position.y}px`,
 			}}
@@ -145,7 +147,10 @@ const Card = ({ character, setCharacter }) => {
 				setCharacter(character);
 			}}
 		>
-			<div className='card-header' style={{ backgroundColor: "#FED0FD" }}>
+			<div
+				className='card-header'
+				style={{ backgroundColor: colors.colorHeader }}
+			>
 				<DeleteButton
 					className='test'
 					id={character._id}
@@ -153,14 +158,14 @@ const Card = ({ character, setCharacter }) => {
 				/>
 				{loading && (
 					<div className='card-saving'>
-						<Spinner color={"#000000"} />
+						<Spinner color={colors.colorText} />
 					</div>
 				)}
 			</div>
 			<div className='card-body'>
 				<textarea
 					ref={textAreaRef}
-					style={{ color: " #000000" }}
+					style={{ color: colors.colorText }}
 					defaultValue={body}
 					onInput={() => {
 						autoGrow(textAreaRef);

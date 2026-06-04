@@ -39,8 +39,9 @@ const characterSchema = new mongoose.Schema({
 	role: {
 		type: String,
 		enum: {
-			values: ["Player", "NPC", "Antagonist"],
+			values: ["Player", "NPC"],
 		},
+		default: "NPC",
 	},
 });
 

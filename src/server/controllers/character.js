@@ -34,8 +34,8 @@ exports.getChar = (req, res) => {
 };
 
 exports.updateChar = (req, res) => {
-	// extract data to update
-	const { genDetails, position } = req.body;
+	// Extract data to update
+	const { genDetails, position, role } = req.body;
 	const toUpdate = {};
 
 	if (genDetails) {
@@ -51,6 +51,10 @@ exports.updateChar = (req, res) => {
 		if (position.y !== undefined) {
 			toUpdate["position.y"] = position.y;
 		}
+	}
+
+	if (role) {
+		toUpdate["role"] = role;
 	}
 
 	// Updating

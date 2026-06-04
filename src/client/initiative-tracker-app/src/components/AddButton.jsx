@@ -23,7 +23,6 @@ export const AddButton = () => {
 
 			// Moving slightly to avoid overlap
 			startPos.current += 10;
-			console.log(payload);
 			// Ping db
 			const response = await axios.post(
 				`${import.meta.env.VITE_API_CHAR_URL}`,
