@@ -37,7 +37,7 @@ export const AddButton = () => {
 	};
 
 	return (
-		<div id='add-btn' onClick={addCharacter}>
+		<div id='add-btn' className='btn-circle' onClick={addCharacter}>
 			<Plus />
 		</div>
 	);

@@ -1,14 +1,27 @@
+import React, { useContext } from "react";
 import { AddButton } from "./AddButton";
-import { Color } from "./Color";
-import colors from "../assets/colors.json";
+import GrabActive from "../icons/GrabActive";
+import GrabLocked from "../icons/GrabLocked";
+import { Theme } from "./Theme";
+import { CardContext } from "../context/CardContext.jsx";
+
+import themes from "../assets/themes.json";
 
 const Controls = () => {
+	const { enableScreenDrag, setScreenDrag } = useContext(CardContext);
+
 	return (
 		<div id='controls'>
 			<AddButton />
-			{colors.map((color) => (
-				<Color key={color.id} color={color} />
+			{themes.map((theme) => (
+				<Theme key={theme.id} theme={theme} />
 			))}
+			<div
+				onClick={() => setScreenDrag(!enableScreenDrag)}
+				className={`btn-circle`}
+			>
+				{enableScreenDrag ? <GrabActive /> : <GrabLocked />}
+			</div>
 		</div>
 	);
 };

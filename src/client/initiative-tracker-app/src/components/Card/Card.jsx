@@ -1,20 +1,20 @@
 import { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
 
-import { autoGrow, bringToFront, getRoleColors } from "../Card/Card.utils";
+import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/DeleteButton";
 import Spinner from "../../icons/Spinner";
+import { CardContext } from "../../context/CardContext";
 
-const Card = ({ character, setCharacter }) => {
+const Card = ({ character }) => {
 	// Tracking general states for query
 	const [loading, setLoading] = useState(false);
 	const [err, setError] = useState(null);
 	const keyUpTimer = useRef(null);
 
-	const body = character.genDetails?.name || "";
-
-	// Setup for color updates
-	const colors = getRoleColors(character.role);
+	const { enableScreenDrag, setSelectedCharacter } = useContext(CardContext);
+	const characterName = character.genDetails?.name || "";
+	const role = character.role;
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -23,10 +23,14 @@ const Card = ({ character, setCharacter }) => {
 
 	// Set up for card expansion
 	const textAreaRef = useRef(null);
+	const limitNotes = window.innerHeight * 0.4;
+	const textAreaNameRef = useRef(null);
+	const limitName = window.innerHeight * 0.15;
 
 	// So that we can use autoGrow on load (adjust size if prefilled db)
 	useEffect(() => {
 		autoGrow(textAreaRef);
+		autoGrow(textAreaNameRef);
 		bringToFront(cardRef.current);
 	}, []);
 
@@ -66,13 +70,15 @@ const Card = ({ character, setCharacter }) => {
 
 	const mouseDown = (e) => {
 		// Clicking so it is selecting the card
-		setCharacter(character);
+		setSelectedCharacter(character);
+		bringToFront(cardRef.current);
+
+		// Should not be able to drag it if feature is locked
+		if (enableScreenDrag) return;
 
 		// This is start poisiton
 		mouseStartPos.x = e.clientX;
 		mouseStartPos.y = e.clientY;
-
-		bringToFront(cardRef.current);
 
 		const handleMouseMove = (e) => {
 			mouseMove(e);
@@ -131,10 +137,9 @@ const Card = ({ character, setCharacter }) => {
 
 	return (
 		<div
-			className='card'
+			className={`card ${role === "Player" ? "player-card" : "hidden-card"} react-transform-component-no-drag`}
 			ref={cardRef}
 			style={{
-				backgroundColor: colors.colorBody,
 				left: `${position.x}px`,
 				top: `${position.y}px`,
 			}}
@@ -144,33 +149,35 @@ const Card = ({ character, setCharacter }) => {
 			}}
 			onFocus={() => {
 				bringToFront(cardRef.current);
-				setCharacter(character);
+				setSelectedCharacter(character);
 			}}
 		>
-			<div
-				className='card-header'
-				style={{ backgroundColor: colors.colorHeader }}
-			>
-				<DeleteButton
-					className='test'
-					id={character._id}
-					setCharacter={setCharacter}
-				/>
-				{loading && (
-					<div className='card-saving'>
-						<Spinner color={colors.colorText} />
-					</div>
-				)}
+			<div className='card-header'>
+				{loading && <div className='card-saving'>{<Spinner />}</div>}
+				<DeleteButton className='test' id={character._id} />
 			</div>
 			<div className='card-body'>
 				<textarea
-					ref={textAreaRef}
-					style={{ color: colors.colorText }}
-					defaultValue={body}
+					ref={textAreaNameRef}
+					className='character-name-input react-transform-component-no-drag'
+					placeholder='Character Name'
+					defaultValue={characterName}
+					rows={1}
 					onInput={() => {
-						autoGrow(textAreaRef);
+						autoGrow(textAreaNameRef, limitName);
 					}}
 					onKeyUp={handleKeyUp}
+					onKeyDown={(e) => e.stopPropagation()}
+				></textarea>
+				<textarea
+					ref={textAreaRef}
+					className='react-transform-component-no-drag'
+					defaultValue={characterName}
+					onInput={() => {
+						autoGrow(textAreaRef, limitNotes);
+					}}
+					onKeyUp={handleKeyUp}
+					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
 			</div>
 		</div>

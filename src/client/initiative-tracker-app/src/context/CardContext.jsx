@@ -13,6 +13,9 @@ const CardProvider = ({ children }) => {
 	const [loading, setLoading] = useState(true);
 	const [err, setError] = useState(null);
 
+	// For navigating the screen with drag
+	const [enableScreenDrag, setScreenDrag] = useState(false);
+
 	useEffect(() => {
 		async function loadCharacters() {
 			try {
@@ -53,6 +56,8 @@ const CardProvider = ({ children }) => {
 		setCharacters,
 		selectedCharacter,
 		setSelectedCharacter,
+		enableScreenDrag,
+		setScreenDrag,
 	};
 
 	return (

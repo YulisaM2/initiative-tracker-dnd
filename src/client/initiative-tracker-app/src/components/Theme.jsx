@@ -2,15 +2,24 @@ import { useState, useContext } from "react";
 import axios from "axios";
 
 import { CardContext } from "../context/CardContext";
+import Player from "../icons/Player";
+import Hidden from "../icons/Hidden";
 
 // For now, color is indicative of type of role a character
-export const Color = ({ color }) => {
+export const Theme = ({ theme }) => {
 	// Tracking general states for query
 	const [err, setError] = useState(null);
 	const { selectedCharacter, characters, setCharacters } =
 		useContext(CardContext);
 
-	const changeColor = () => {
+	// To set icon corresponding to theme/value
+	const MENU_ICONS = {
+		Player: Player,
+		Hidden: Hidden,
+	};
+	const SelectedIcon = MENU_ICONS[theme.icon];
+
+	const changeTheme = () => {
 		try {
 			const currCardIndex = characters.findIndex(
 				(character) => character._id === selectedCharacter._id,
@@ -18,7 +27,7 @@ export const Color = ({ color }) => {
 
 			const updateCard = {
 				...characters[currCardIndex],
-				role: color.id,
+				role: theme.id,
 			};
 
 			const newCards = [...characters];
@@ -29,7 +38,7 @@ export const Color = ({ color }) => {
 				try {
 					// Format payload
 					const payload = {
-						role: color.id,
+						role: theme.id,
 					};
 
 					// Ping db
@@ -42,17 +51,15 @@ export const Color = ({ color }) => {
 				}
 			};
 
-			updateCardColor();
+			updateCardTheme();
 		} catch (error) {
 			setError(error.message);
 		}
 	};
 
 	return (
-		<div
-			onClick={changeColor}
-			className='color'
-			style={{ backgroundColor: color.colorHeader }}
-		></div>
+		<div onClick={changeTheme} className={`theme ${theme.style}`}>
+			<SelectedIcon />
+		</div>
 	);
 };

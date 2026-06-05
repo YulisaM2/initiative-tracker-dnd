@@ -1,4 +1,4 @@
-const Spinner = ({ color = "#fff", size = "20" }) => {
+const Spinner = ({ size = "24" }) => {
 	return (
 		<svg
 			className='spinner'
@@ -6,7 +6,7 @@ const Spinner = ({ color = "#fff", size = "20" }) => {
 			viewBox='0 0 24 24'
 			width={size}
 			height={size}
-			stroke={color}
+			stroke='#000000'
 			fill='none'
 			strokeWidth='1.5'
 		>
