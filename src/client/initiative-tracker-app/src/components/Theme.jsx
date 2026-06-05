@@ -34,7 +34,7 @@ export const Theme = ({ theme }) => {
 			newCards[currCardIndex] = updateCard;
 			setCharacters(newCards);
 
-			const updateCardColor = async () => {
+			const updateCardTheme = async () => {
 				try {
 					// Format payload
 					const payload = {
