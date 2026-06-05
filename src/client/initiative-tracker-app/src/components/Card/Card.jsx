@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
 
 import { autoGrow, bringToFront } from "../Card/Card.utils";
-import { DeleteButton } from "../../components/DeleteButton";
+import { DeleteButton } from "../../components/Controls/DeleteButton";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
 

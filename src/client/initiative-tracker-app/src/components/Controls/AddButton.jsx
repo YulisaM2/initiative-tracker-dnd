@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useRef, useState, useContext } from "react";
 
-import Plus from "../icons/Plus";
-import { CardContext } from "../context/CardContext";
+import Plus from "../../icons/Plus";
+import { CardContext } from "../../context/CardContext";
 
 export const AddButton = () => {
 	// Tracking general states

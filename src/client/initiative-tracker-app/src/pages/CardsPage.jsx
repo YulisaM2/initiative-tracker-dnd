@@ -3,7 +3,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import Card from "../components/Card/Card.jsx";
 import { CardContext } from "../context/CardContext.jsx";
-import Controls from "../components/Controls.jsx";
+import Controls from "../components/Controls/Controls.jsx";
 
 const CardsPage = () => {
 	const { characters, setSelectedCharacter } = useContext(CardContext);
