@@ -1,5 +1,5 @@
 :root {
-	font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+	font-family: "modesto-condensed", "Nodesto Caps Condensed", "Georgia", serif;
 	line-height: 1.5;
 	font-weight: 400;
 	color-scheme: light dark;
@@ -10,6 +10,26 @@
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
 	--spinner-animation-speed: 2s;
+}
+
+.page-wrapper {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+.card-board-grid {
+	grid-template-columns: repeat(4, 340px);
+	grid-template-rows: repeat(2, auto);
+	gap: 40px;
+
+	width: 1600px;
+	height: 1200px;
+	padding: 100px;
+	box-sizing: border-box;
 }
 
 body {
@@ -29,8 +49,10 @@ body {
 }
 
 .card {
-	width: 400px;
-	border-radius: 5px;
+	width: 100%;
+	max-width: 360px;
+	min-width: 260px;
+	margin: 0 auto;
 	cursor: pointer;
 	position: absolute;
 	box-shadow:
@@ -43,7 +65,15 @@ body {
 }
 
 .card-body {
-	padding: 1em;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+
+	padding-top: 0px !important;
+	padding-left: 1em;
+	padding-right: 1em;
+	padding-bottom: 1em;
+	margin-top: 0 !important;
 	border-radius: 0 0 5px 5px;
 	background-color: transparent;
 }
@@ -71,7 +101,12 @@ textarea:focus {
 	justify-content: flex-end !important;
 	align-items: center !important;
 	gap: 10px;
-	padding: 5px 10px;
+
+	padding-top: 2em;
+	padding-left: 2em;
+	padding-right: 2em;
+	padding-bottom: 0 !important;
+	margin-bottom: 0 !important;
 	border-bottom: transparent;
 	background-color: transparent;
 	box-sizing: border-box;
@@ -118,29 +153,6 @@ textarea:focus {
 		0 16px 16px hsl(0deg 0% 0% / 0.075);
 	z-index: 10000;
 }
-
-#add-btn {
-	background-color: rgba(107, 107, 107, 1);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 40px;
-	width: 40px;
-	border-radius: 50%;
-	cursor: pointer;
-
-	transition:
-		transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-		box-shadow 0.3s ease;
-	border: none;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6) !important;
-}
-
-#add-btn:hover {
-	transform: scale(1.25);
-	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
-}
-
 .theme {
 	background-color: grey;
 	height: 40px;
@@ -346,4 +358,56 @@ textarea:focus {
 .hidden-card svg path {
 	fill: currentColor !important;
 	stroke: currentColor !important;
+}
+.card-body textarea.character-name-input {
+	font-family: "bookmania", "Georgia", "Times New Roman", serif !important;
+	font-weight: 700;
+	font-size: 24px;
+	text-align: center;
+	height: auto;
+	margin-top: 0 !important;
+	padding-top: 2px !important;
+	margin-bottom: 15px;
+
+	background-color: transparent;
+	border: none;
+	width: 100%;
+	resize: none;
+	outline: none;
+}
+
+.character-name-input:focus {
+	background-color: transparent;
+	outline: none;
+}
+
+.btn-circle {
+	background-color: rgba(107, 107, 107, 1);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 40px;
+	border-radius: 50%;
+	border: none;
+	cursor: pointer;
+	color: white;
+	font-size: 14px;
+
+	transition:
+		transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+		box-shadow 0.3s ease,
+		background-color 0.3s ease;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6) !important;
+}
+
+.btn-circle:hover {
+	transform: scale(1.25);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+.btn-circle svg {
+	stroke: #ffffff !important;
+	fill: none !important;
+	transition: transform 0.2s ease;
 }

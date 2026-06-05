@@ -8,10 +8,10 @@ export const bringToFront = (selectedCard) => {
 };
 
 // Make sure size of card expands as text area grow
-export const autoGrow = (textAreaRef) => {
+export const autoGrow = (textAreaRef, limit) => {
 	const { current } = textAreaRef;
 	// Limit card growth
-	if (current.scrollHeight > window.innerHeight * 0.4) return;
+	if (current.scrollHeight > limit) return;
 	// Reset height first
 	current.style.height = "auto";
 	// Set the new height
