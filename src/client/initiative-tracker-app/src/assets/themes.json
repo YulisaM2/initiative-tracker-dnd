@@ -1,0 +1,12 @@
+[
+	{
+		"id": "NPC",
+		"style": "hidden-card",
+		"icon": "Hidden"
+	},
+	{
+		"id": "Player",
+		"style": "player-card",
+		"icon": "Player"
+	}
+]

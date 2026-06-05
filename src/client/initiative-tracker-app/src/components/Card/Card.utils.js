@@ -1,5 +1,3 @@
-import colors from "../../assets/colors.json";
-
 // Updating z index so card can be viewed without obstructions
 export const bringToFront = (selectedCard) => {
 	selectedCard.style.zIndex = 999;
@@ -18,9 +16,4 @@ export const autoGrow = (textAreaRef) => {
 	current.style.height = "auto";
 	// Set the new height
 	current.style.height = current.scrollHeight + "px";
-};
-
-// Getting colors used for the character card
-export const getRoleColors = (role) => {
-	return colors.find((color) => color.id === role);
 };
