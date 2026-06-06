@@ -207,22 +207,24 @@ const Card = ({ character }) => {
 					onKeyUp={handleKeyUp}
 					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
-				<Stat
-					className='armor-class-input react-transform-component-no-drag'
-					statName='armorClass'
-					label='AC'
-					defaultValue={characterAC}
-					id={character._id}
-					onLoadingChange={handleFieldLoading}
-				></Stat>
-				<Stat
-					className='passive-percept-input react-transform-component-no-drag'
-					statName='passivePercept'
-					label='PP'
-					defaultValue={characterPP}
-					id={character._id}
-					onLoadingChange={handleFieldLoading}
-				></Stat>
+				<div className='stats-container'>
+					<Stat
+						className='armor-class-input react-transform-component-no-drag'
+						statName='armorClass'
+						label='AC'
+						defaultValue={characterAC}
+						id={character._id}
+						onLoadingChange={handleFieldLoading}
+					></Stat>
+					<Stat
+						className='passive-percept-input react-transform-component-no-drag'
+						statName='passivePercept'
+						label='PP'
+						defaultValue={characterPP}
+						id={character._id}
+						onLoadingChange={handleFieldLoading}
+					></Stat>
+				</div>
 				{/* <textarea
 					ref={textAreaRef}
 					className='react-transform-component-no-drag'

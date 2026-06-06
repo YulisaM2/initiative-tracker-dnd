@@ -412,18 +412,39 @@ textarea:focus {
 	transition: transform 0.2s ease;
 }
 
+.stats-container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 20px;
+	width: 100%;
+	margin-top: 10px;
+}
+
 .stat-container {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
+
+.stat {
+	width: 50px;
+	height: 30px;
+	text-align: center;
+	border: none;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.stat:focus,
+.stat:active {
+	outline: none;
+	border: none;
+}
+
 .stat-label {
 	font-size: 12px;
 	font-weight: bold;
 	margin-bottom: 4px;
-}
-
-.stat {
-	width: 60px;
-	text-align: center;
 }

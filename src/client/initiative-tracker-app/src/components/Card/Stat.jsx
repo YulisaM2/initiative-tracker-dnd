@@ -49,6 +49,10 @@ export const Stat = ({
 		if (cleanValue.length > maxLenght)
 			cleanValue = cleanValue.slice(0, maxLenght);
 
+		// Checking that input changed at all
+		// Here to avoid triggering loading animation
+		if (cleanValue === value) return;
+
 		setValue(cleanValue);
 
 		// Handling emptying of field -> set stat to 0 in db
