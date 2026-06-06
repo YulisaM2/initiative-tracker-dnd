@@ -3,18 +3,27 @@ import axios from "axios";
 
 import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
+import { Stat } from "./Stat";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
 
 const Card = ({ character }) => {
 	// Tracking general states for query
 	const [loading, setLoading] = useState(false);
+
+	const handleFieldLoading = (isLoading) => {
+		setLoading(isLoading);
+	};
+
 	const [err, setError] = useState(null);
 	const keyUpTimer = useRef(null);
 
-	const { enableScreenDrag, setSelectedCharacter } = useContext(CardContext);
+	const { enableScreenDrag, setSelectedCharacter, updateCharacterInContext } =
+		useContext(CardContext);
 	const characterName = character.genDetails?.name || "";
 	const role = character.role;
+	const characterAC = character?.combatHighlights?.armorClass || "";
+	const characterPP = character?.combatHighlights?.passivePercept || "";
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -22,14 +31,14 @@ const Card = ({ character }) => {
 	const cardRef = useRef(null);
 
 	// Set up for card expansion
-	const textAreaRef = useRef(null);
-	const limitNotes = window.innerHeight * 0.4;
+	// const textAreaRef = useRef(null);
+	// const limitNotes = window.innerHeight * 0.4;
 	const textAreaNameRef = useRef(null);
 	const limitName = window.innerHeight * 0.15;
 
 	// So that we can use autoGrow on load (adjust size if prefilled db)
 	useEffect(() => {
-		autoGrow(textAreaRef);
+		// autoGrow(textAreaRef);
 		autoGrow(textAreaNameRef);
 		bringToFront(cardRef.current);
 	}, []);
@@ -121,6 +130,30 @@ const Card = ({ character }) => {
 		}
 	};
 
+	const updateCharacterName = async (newName) => {
+		try {
+			setLoading(true);
+
+			// Format payload
+			const payload = {
+				genDetails: {
+					name: newName,
+				},
+			};
+
+			// Ping db
+			const response = await axios.patch(
+				`${import.meta.env.VITE_API_CHAR_URL}/${character._id}`,
+				payload,
+			);
+			if (response.data) updateCharacterInContext(character._id, response.data);
+		} catch (error) {
+			setError(error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	// As we update any area in the card, trigger auto save
 	const handleKeyUp = async () => {
 		setLoading(true);
@@ -132,6 +165,7 @@ const Card = ({ character }) => {
 		// Set card update after delay
 		keyUpTimer.current = setTimeout(() => {
 			updateCardPos(cardRef.current);
+			updateCharacterName(textAreaNameRef.current.value);
 		}, delay);
 	};
 
@@ -153,7 +187,11 @@ const Card = ({ character }) => {
 			}}
 		>
 			<div className='card-header'>
-				{loading && <div className='card-saving'>{<Spinner />}</div>}
+				{loading && (
+					<div className='card-saving'>
+						<Spinner />
+					</div>
+				)}
 				<DeleteButton className='test' id={character._id} />
 			</div>
 			<div className='card-body'>
@@ -169,7 +207,23 @@ const Card = ({ character }) => {
 					onKeyUp={handleKeyUp}
 					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
-				<textarea
+				<Stat
+					className='armor-class-input react-transform-component-no-drag'
+					statName='armorClass'
+					label='AC'
+					defaultValue={characterAC}
+					id={character._id}
+					onLoadingChange={handleFieldLoading}
+				></Stat>
+				<Stat
+					className='passive-percept-input react-transform-component-no-drag'
+					statName='passivePercept'
+					label='PP'
+					defaultValue={characterPP}
+					id={character._id}
+					onLoadingChange={handleFieldLoading}
+				></Stat>
+				{/* <textarea
 					ref={textAreaRef}
 					className='react-transform-component-no-drag'
 					defaultValue={characterName}
@@ -178,7 +232,7 @@ const Card = ({ character }) => {
 					}}
 					onKeyUp={handleKeyUp}
 					onKeyDown={(e) => e.stopPropagation()}
-				></textarea>
+				></textarea> */}
 			</div>
 		</div>
 	);

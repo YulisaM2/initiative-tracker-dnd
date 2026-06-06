@@ -411,3 +411,19 @@ textarea:focus {
 	fill: none !important;
 	transition: transform 0.2s ease;
 }
+
+.stat-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.stat-label {
+	font-size: 12px;
+	font-weight: bold;
+	margin-bottom: 4px;
+}
+
+.stat {
+	width: 60px;
+	text-align: center;
+}

@@ -35,7 +35,7 @@ exports.getChar = (req, res) => {
 
 exports.updateChar = (req, res) => {
 	// Extract data to update
-	const { genDetails, position, role } = req.body;
+	const { genDetails, position, role, combatHighlights } = req.body;
 	const toUpdate = {};
 
 	if (genDetails) {
@@ -45,16 +45,20 @@ exports.updateChar = (req, res) => {
 	}
 
 	if (position) {
-		if (position.x !== undefined) {
-			toUpdate["position.x"] = position.x;
-		}
-		if (position.y !== undefined) {
-			toUpdate["position.y"] = position.y;
-		}
+		if (position.x !== undefined) toUpdate["position.x"] = position.x;
+
+		if (position.y !== undefined) toUpdate["position.y"] = position.y;
 	}
 
-	if (role) {
-		toUpdate["role"] = role;
+	if (role) toUpdate["role"] = role;
+
+	if (combatHighlights) {
+		if (combatHighlights.armorClass !== undefined)
+			toUpdate["combatHighlights.armorClass"] = combatHighlights.armorClass;
+
+		if (combatHighlights.passivePercept !== undefined)
+			toUpdate["combatHighlights.passivePercept"] =
+				combatHighlights.passivePercept;
 	}
 
 	// Updating
