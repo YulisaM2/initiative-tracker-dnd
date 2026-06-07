@@ -9,7 +9,15 @@
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-text-size-adjust: 100%;
+
 	--spinner-animation-speed: 2s;
+
+	--insp-inactive-color: #55565f;
+	--bardic-active-color: #8c1eff;
+	--bardic-glow-color: rgba(140, 30, 255, 0.85);
+
+	--heroic-active-color: #2a6dfc;
+	--heroic-glow-color: rgba(42, 109, 252, 0.85);
 }
 
 .page-wrapper {
@@ -447,4 +455,31 @@ textarea:focus {
 	font-size: 12px;
 	font-weight: bold;
 	margin-bottom: 4px;
+}
+
+.bonus-bttn,
+.bonus-bttn svg {
+	background-color: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.bonus-bttn.bardic-insp-bttn.inactive .clef-glow-target,
+.bonus-bttn.heroic-insp-bttn.inactive .glow-target {
+	fill: var(--insp-inactive-color) !important;
+	stroke: none !important;
+	filter: none !important;
+}
+
+.bonus-bttn.bardic-insp-bttn.active .clef-glow-target {
+	fill: var(--bardic-active-color) !important;
+	stroke: none !important;
+	filter: url(#gold-glow) !important;
+}
+
+.bonus-bttn.heroic-insp-bttn.active .glow-target {
+	fill: var(--heroic-active-color) !important;
+	stroke: none !important;
+	filter: url(#red-glow) !important;
 }

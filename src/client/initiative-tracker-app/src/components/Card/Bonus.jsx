@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 
 import { CardContext } from "../../context/CardContext";
-import Note from "../../icons/Bonus/Note";
+import BassClef from "../../icons/Bonus/BassClef";
 import Hero from "../../icons/Bonus/Hero";
 
 export const Bonus = ({
@@ -16,20 +16,20 @@ export const Bonus = ({
 	// Tracking general states for query
 	const [err, setError] = useState(null);
 	const { updateCharacterInContext } = useContext(CardContext);
+	const delay = 300;
 
 	// To set icon corresponding to theme/value
 	const INSP_ICONS = {
-		hasBardicInsp: Note,
+		hasBardicInsp: BassClef,
 		hasHeroicInsp: Hero,
 	};
-	console.log(bonusName);
 	const SelectedIcon = INSP_ICONS[bonusName];
 
+	// To apply style of inactive vs active
+	const combinedButtonClass = `bonus-bttn ${className || ""} ${defaultValue ? "active" : "inactive"}`;
 	const updateBonus = async (e) => {
-		if (e) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		if (e) e.preventDefault();
+
 		if (onLoadingChange) onLoadingChange(true);
 
 		try {
@@ -39,10 +39,13 @@ export const Bonus = ({
 			};
 
 			// Ping db
-			const response = await axios.patch(
-				`${import.meta.env.VITE_API_CHAR_URL}/${id}/${url}`,
-				payload,
-			);
+			const [response] = await Promise.all([
+				axios.patch(
+					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${url}`,
+					payload,
+				),
+				new Promise((resolve) => setTimeout(resolve, delay)),
+			]); // 350ms smooth pad duration;
 
 			if (response.data) updateCharacterInContext(id, response.data);
 		} catch (error) {
@@ -54,7 +57,11 @@ export const Bonus = ({
 
 	return (
 		<div className='stat-container'>
-			<button className={`bonus-bttn ${className || ""}`} onClick={updateBonus}>
+			<button
+				className={combinedButtonClass}
+				onClick={updateBonus}
+				onMouseDown={(e) => e.stopPropagation()}
+			>
 				<SelectedIcon />
 			</button>
 		</div>
