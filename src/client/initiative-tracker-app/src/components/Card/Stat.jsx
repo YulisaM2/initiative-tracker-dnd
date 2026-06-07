@@ -75,8 +75,8 @@ export const Stat = ({
 				};
 
 				// Ping db
-				const response = await axios.put(
-					`${import.meta.env.VITE_API_CHAR_URL}/${id}`,
+				const response = await axios.patch(
+					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_COMBAT_HIGHLIGHTS_URL}`,
 					payload,
 				);
 

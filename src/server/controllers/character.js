@@ -35,11 +35,10 @@ exports.getChar = (req, res) => {
 
 exports.updateChar = (req, res) => {
 	// Extract data to update
-	const { genDetails, position, role, combatHighlights } = req.body;
+	const { genDetails, position, role } = req.body;
 	const toUpdate = {};
 
 	if (genDetails) {
-		// TODO: add other fields
 		if (genDetails.name !== undefined)
 			toUpdate["genDetails.name"] = genDetails.name;
 	}
@@ -52,6 +51,28 @@ exports.updateChar = (req, res) => {
 
 	if (role) toUpdate["role"] = role;
 
+	// Updating
+	db.Character.findOneAndUpdate(
+		{ _id: req.params.charId },
+		{ $set: toUpdate },
+		{
+			new: true, // respond with updatedChar,
+			runValidators: true,
+		},
+	)
+		.then((updatedChar) => {
+			res.json(updatedChar);
+		})
+		.catch((err) => {
+			res.send(err);
+		});
+};
+
+exports.updateCombatHigh = (req, res) => {
+	// Extract data to update
+	const { combatHighlights } = req.body;
+	const toUpdate = {};
+
 	if (combatHighlights) {
 		if (combatHighlights.armorClass !== undefined)
 			toUpdate["combatHighlights.armorClass"] = combatHighlights.armorClass;
@@ -60,6 +81,60 @@ exports.updateChar = (req, res) => {
 			toUpdate["combatHighlights.passivePercept"] =
 				combatHighlights.passivePercept;
 	}
+
+	// Updating
+	db.Character.findOneAndUpdate(
+		{ _id: req.params.charId },
+		{ $set: toUpdate },
+		{
+			new: true, // respond with updatedChar,
+			runValidators: true,
+		},
+	)
+		.then((updatedChar) => {
+			res.json(updatedChar);
+		})
+		.catch((err) => {
+			res.send(err);
+		});
+};
+
+exports.updateHasBardicInsp = (req, res) => {
+	// Extract data to update
+	const { hasBardicInsp } = req.body;
+	console.log(hasBardicInsp);
+	const toUpdate = {};
+
+	// Checking if boolean is set
+	if (hasBardicInsp !== undefined && hasBardicInsp !== null)
+		toUpdate["hasBardicInsp"] = hasBardicInsp;
+
+	// Updating
+	db.Character.findOneAndUpdate(
+		{ _id: req.params.charId },
+		{ $set: toUpdate },
+		{
+			new: true, // respond with updatedChar,
+			runValidators: true,
+		},
+	)
+		.then((updatedChar) => {
+			res.json(updatedChar);
+		})
+		.catch((err) => {
+			res.send(err);
+		});
+};
+
+exports.updateHasHeroicInsp = (req, res) => {
+	// Extract data to update
+	const { hasHeroicInsp } = req.body;
+	console.log(hasHeroicInsp);
+	const toUpdate = {};
+
+	// Checking if boolean is set
+	if (hasHeroicInsp !== undefined && hasHeroicInsp !== null)
+		toUpdate["hasHeroicInsp"] = hasHeroicInsp;
 
 	// Updating
 	db.Character.findOneAndUpdate(

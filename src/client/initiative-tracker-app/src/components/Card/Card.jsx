@@ -4,6 +4,7 @@ import axios from "axios";
 import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
+import { Bonus } from "./Bonus";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
 
@@ -24,6 +25,8 @@ const Card = ({ character }) => {
 	const role = character.role;
 	const characterAC = character?.combatHighlights?.armorClass || "";
 	const characterPP = character?.combatHighlights?.passivePercept || "";
+	const hasBardicInsp = character?.hasBardicInsp || "";
+	const hasHeroicInsp = character?.hasHeroicInsp || "";
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -224,6 +227,24 @@ const Card = ({ character }) => {
 						id={character._id}
 						onLoadingChange={handleFieldLoading}
 					></Stat>
+				</div>
+				<div className='stats-container'>
+					<Bonus
+						className='bardic-insp-bttn react-transform-component-no-drag'
+						bonusName='hasBardicInsp'
+						defaultValue={hasBardicInsp}
+						url={import.meta.env.VITE_API_BARDIC_INSPIRATION_URL}
+						id={character._id}
+						onLoadingChange={handleFieldLoading}
+					></Bonus>
+					<Bonus
+						className='heroic-insp-bttn react-transform-component-no-drag'
+						bonusName='hasHeroicInsp'
+						defaultValue={hasHeroicInsp}
+						url={import.meta.env.VITE_API_HEROIC_INSPIRATION_URL}
+						id={character._id}
+						onLoadingChange={handleFieldLoading}
+					></Bonus>
 				</div>
 				{/* <textarea
 					ref={textAreaRef}
