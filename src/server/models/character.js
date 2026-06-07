@@ -1,20 +1,22 @@
 const mongoose = require("mongoose");
 
 const { combatHighlightsSchema } = require("./combat-highlights.js");
-const { genDetailsSchema } = require("./gen-details.js");
-const { bonusSchema } = require("./bonus.js");
 
 // Following Monster Manual Stat Block Overview as guide
 const characterSchema = new mongoose.Schema({
-	bonus: {
-		// Consumables that benefit character
-		type: [bonusSchema],
-	},
 	combatHighlights: {
 		type: combatHighlightsSchema,
 	},
-	genDetails: {
-		type: genDetailsSchema,
+	hasBardicInsp: {
+		type: Boolean,
+		default: false,
+	},
+	hasHeroicInsp: {
+		type: Boolean,
+		default: false,
+	},
+	name: {
+		type: String,
 	},
 	position: {
 		x: {
@@ -42,5 +44,8 @@ const characterSchema = new mongoose.Schema({
 	},
 });
 
+if (mongoose.models && mongoose.models.Character) {
+	delete mongoose.models.Character;
+}
 const Character = mongoose.model("character", characterSchema);
 module.exports = { Character };
