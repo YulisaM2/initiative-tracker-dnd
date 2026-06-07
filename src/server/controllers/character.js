@@ -33,27 +33,9 @@ exports.getChar = (req, res) => {
 		});
 };
 
-exports.updateChar = (req, res) => {
-	// Extract data to update
-	const { genDetails, position, role } = req.body;
-	const toUpdate = {};
-
-	if (genDetails) {
-		if (genDetails.name !== undefined)
-			toUpdate["genDetails.name"] = genDetails.name;
-	}
-
-	if (position) {
-		if (position.x !== undefined) toUpdate["position.x"] = position.x;
-
-		if (position.y !== undefined) toUpdate["position.y"] = position.y;
-	}
-
-	if (role) toUpdate["role"] = role;
-
-	// Updating
+const updateCharInDb = (id, toUpdate, res) => {
 	db.Character.findOneAndUpdate(
-		{ _id: req.params.charId },
+		{ _id: id },
 		{ $set: toUpdate },
 		{
 			new: true, // respond with updatedChar,
@@ -66,6 +48,27 @@ exports.updateChar = (req, res) => {
 		.catch((err) => {
 			res.send(err);
 		});
+};
+
+exports.updateChar = (req, res) => {
+	// Extract data to update
+	const { name, position, role } = req.body;
+	const toUpdate = {};
+
+	if (name) {
+		toUpdate["name"] = name;
+	}
+
+	if (position) {
+		if (position.x !== undefined) toUpdate["position.x"] = position.x;
+
+		if (position.y !== undefined) toUpdate["position.y"] = position.y;
+	}
+
+	if (role) toUpdate["role"] = role;
+
+	// Updating
+	updateCharInDb(req.params.charId, toUpdate, res);
 };
 
 exports.updateCombatHigh = (req, res) => {
@@ -83,20 +86,7 @@ exports.updateCombatHigh = (req, res) => {
 	}
 
 	// Updating
-	db.Character.findOneAndUpdate(
-		{ _id: req.params.charId },
-		{ $set: toUpdate },
-		{
-			new: true, // respond with updatedChar,
-			runValidators: true,
-		},
-	)
-		.then((updatedChar) => {
-			res.json(updatedChar);
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+	updateCharInDb(req.params.charId, toUpdate, res);
 };
 
 exports.updateHasBardicInsp = (req, res) => {
@@ -110,20 +100,7 @@ exports.updateHasBardicInsp = (req, res) => {
 		toUpdate["hasBardicInsp"] = hasBardicInsp;
 
 	// Updating
-	db.Character.findOneAndUpdate(
-		{ _id: req.params.charId },
-		{ $set: toUpdate },
-		{
-			new: true, // respond with updatedChar,
-			runValidators: true,
-		},
-	)
-		.then((updatedChar) => {
-			res.json(updatedChar);
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+	updateCharInDb(req.params.charId, toUpdate, res);
 };
 
 exports.updateHasHeroicInsp = (req, res) => {
@@ -137,20 +114,7 @@ exports.updateHasHeroicInsp = (req, res) => {
 		toUpdate["hasHeroicInsp"] = hasHeroicInsp;
 
 	// Updating
-	db.Character.findOneAndUpdate(
-		{ _id: req.params.charId },
-		{ $set: toUpdate },
-		{
-			new: true, // respond with updatedChar,
-			runValidators: true,
-		},
-	)
-		.then((updatedChar) => {
-			res.json(updatedChar);
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+	updateCharInDb(req.params.charId, toUpdate, res);
 };
 
 exports.deleteChar = (req, res) => {

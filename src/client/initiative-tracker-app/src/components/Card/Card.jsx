@@ -21,7 +21,7 @@ const Card = ({ character }) => {
 
 	const { enableScreenDrag, setSelectedCharacter, updateCharacterInContext } =
 		useContext(CardContext);
-	const characterName = character.genDetails?.name || "";
+	const characterName = character.name || "";
 	const role = character.role;
 	const characterAC = character?.combatHighlights?.armorClass || "";
 	const characterPP = character?.combatHighlights?.passivePercept || "";
@@ -139,9 +139,7 @@ const Card = ({ character }) => {
 
 			// Format payload
 			const payload = {
-				genDetails: {
-					name: newName,
-				},
+				name: newName,
 			};
 
 			// Ping db
