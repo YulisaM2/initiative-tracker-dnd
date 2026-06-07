@@ -103,6 +103,24 @@ textarea:focus {
 	height: 100%;
 }
 
+textarea::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+}
+
+textarea::-webkit-scrollbar-track {
+	background-color: transparent !important;
+}
+
+textarea::-webkit-scrollbar-thumb {
+	background-color: #35363e !important;
+	border-radius: 10px !important;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+	background-color: #565761 !important;
+}
+
 .card-header {
 	border-radius: 5px 5px 0 0;
 	display: flex !important;

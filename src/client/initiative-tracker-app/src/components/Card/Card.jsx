@@ -43,7 +43,7 @@ const Card = ({ character }) => {
 
 	// So that we can use autoGrow on load (adjust size if prefilled db)
 	useEffect(() => {
-		autoGrow(textAreaNameRef);
+		autoGrow(textAreaNameRef, limitName);
 		bringToFront(cardRef.current);
 	}, []);
 
@@ -203,7 +203,9 @@ const Card = ({ character }) => {
 					placeholder='Character Name'
 					defaultValue={characterName}
 					rows={1}
-					onInput={() => {
+					onInput={(e) => {
+						// Remove leading spaces
+						e.target.value = e.target.value.replace(/^\s+/, "");
 						autoGrow(textAreaNameRef, limitName);
 					}}
 					onKeyUp={handleKeyUp}

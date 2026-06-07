@@ -22,7 +22,7 @@ const Notes = ({
 
 	// Setup for card expanison
 	const textAreaNotesRef = useRef(null);
-	const limitNotes = window.innerHeight * 0.4;
+	const limitNotes = window.innerHeight * 0.3;
 
 	// Controlling how often to query db (avoid spamming)
 	// Timmer will trigger when component unmounts (updates)
