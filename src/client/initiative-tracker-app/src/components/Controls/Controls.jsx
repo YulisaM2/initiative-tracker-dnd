@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { AddButton } from "./AddButton.jsx";
-import GrabActive from "../../icons/GrabActive.jsx";
-import GrabLocked from "../../icons/GrabLocked.jsx";
+import GrabActive from "../../icons/Controls/DragMap/GrabActive.jsx";
+import GrabLocked from "../../icons/Controls/DragMap/GrabLocked.jsx";
 import { Theme } from "../Theme.jsx";
 import { CardContext } from "../../context/CardContext.jsx";
 

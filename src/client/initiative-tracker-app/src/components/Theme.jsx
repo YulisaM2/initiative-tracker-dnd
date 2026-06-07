@@ -2,8 +2,8 @@ import { useState, useContext } from "react";
 import axios from "axios";
 
 import { CardContext } from "../context/CardContext";
-import Player from "../icons/Player";
-import Hidden from "../icons/Hidden";
+import Player from "../icons/Theme/Player";
+import Hidden from "../icons/Theme/Hidden";
 
 // For now, color is indicative of type of role a character
 export const Theme = ({ theme }) => {

@@ -2,6 +2,8 @@ import { useState, useContext } from "react";
 import axios from "axios";
 
 import { CardContext } from "../../context/CardContext";
+import Note from "../../icons/Bonus/Note";
+import Hero from "../../icons/Bonus/Hero";
 
 export const Bonus = ({
 	id,
@@ -15,6 +17,14 @@ export const Bonus = ({
 	const [err, setError] = useState(null);
 	const { updateCharacterInContext } = useContext(CardContext);
 
+	// To set icon corresponding to theme/value
+	const INSP_ICONS = {
+		hasBardicInsp: Note,
+		hasHeroicInsp: Hero,
+	};
+	console.log(bonusName);
+	const SelectedIcon = INSP_ICONS[bonusName];
+
 	const updateBonus = async (e) => {
 		if (e) {
 			e.preventDefault();
@@ -22,17 +32,11 @@ export const Bonus = ({
 		}
 		if (onLoadingChange) onLoadingChange(true);
 
-		// Delay before firing stat update
 		try {
-			console.log("UPDATE");
-
 			// Format payload
 			const payload = {
 				[bonusName]: !defaultValue,
 			};
-
-			console.log(payload);
-			console.log(`${import.meta.env.VITE_API_CHAR_URL}/${id}/${url}`);
 
 			// Ping db
 			const response = await axios.patch(
@@ -50,10 +54,9 @@ export const Bonus = ({
 
 	return (
 		<div className='stat-container'>
-			<button
-				className={`bonus-bttn ${className || ""}`}
-				onClick={updateBonus}
-			></button>
+			<button className={`bonus-bttn ${className || ""}`} onClick={updateBonus}>
+				<SelectedIcon />
+			</button>
 		</div>
 	);
 };

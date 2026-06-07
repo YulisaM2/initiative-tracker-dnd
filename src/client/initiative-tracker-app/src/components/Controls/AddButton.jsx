@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRef, useState, useContext } from "react";
 
-import Plus from "../../icons/Plus";
+import Plus from "../../icons/Controls/Plus";
 import { CardContext } from "../../context/CardContext";
 
 export const AddButton = () => {
