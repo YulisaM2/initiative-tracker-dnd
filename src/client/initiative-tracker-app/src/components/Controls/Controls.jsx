@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
-import { AddButton } from "./AddButton";
-import GrabActive from "../icons/GrabActive";
-import GrabLocked from "../icons/GrabLocked";
-import { Theme } from "./Theme";
-import { CardContext } from "../context/CardContext.jsx";
+import { AddButton } from "./AddButton.jsx";
+import GrabActive from "../../icons/Controls/DragMap/GrabActive.jsx";
+import GrabLocked from "../../icons/Controls/DragMap/GrabLocked.jsx";
+import { Theme } from "../Theme.jsx";
+import { CardContext } from "../../context/CardContext.jsx";
 
-import themes from "../assets/themes.json";
+import themes from "../../assets/themes.json";
 
 const Controls = () => {
 	const { enableScreenDrag, setScreenDrag } = useContext(CardContext);

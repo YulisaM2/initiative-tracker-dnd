@@ -1,8 +1,8 @@
 import { useRef, useContext } from "react";
 import axios from "axios";
 
-import { CardContext } from "../context/CardContext";
-import Trash from "../icons/Trash";
+import { CardContext } from "../../context/CardContext";
+import Trash from "../../icons/Trash";
 
 export const DeleteButton = ({ id }) => {
 	const { setCharacters } = useContext(CardContext);

@@ -13,6 +13,15 @@ router
 
 router.route("/dummyData").get(dbHelpers.fillDb);
 
+// Updating stats
+router.route("/:charId/combat-highlights").patch(controller.updateCombatHigh);
+router
+	.route("/:charId/bardic-inspiration")
+	.patch(controller.updateHasBardicInsp);
+router
+	.route("/:charId/heroic-inspiration")
+	.patch(controller.updateHasHeroicInsp);
+
 router
 	.route("/:charId")
 	.get(controller.getChar)

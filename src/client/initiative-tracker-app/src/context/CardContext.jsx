@@ -16,6 +16,14 @@ const CardProvider = ({ children }) => {
 	// For navigating the screen with drag
 	const [enableScreenDrag, setScreenDrag] = useState(false);
 
+	const updateCharacterInContext = (characterId, updatedData) => {
+		setCharacters((prevCharacters) =>
+			prevCharacters.map((char) =>
+				char._id === characterId ? { ...char, ...updatedData } : char,
+			),
+		);
+	};
+
 	useEffect(() => {
 		async function loadCharacters() {
 			try {
@@ -58,6 +66,7 @@ const CardProvider = ({ children }) => {
 		setSelectedCharacter,
 		enableScreenDrag,
 		setScreenDrag,
+		updateCharacterInContext,
 	};
 
 	return (

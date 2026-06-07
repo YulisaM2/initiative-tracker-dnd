@@ -1,26 +1,22 @@
 const mongoose = require("mongoose");
 
 const { combatHighlightsSchema } = require("./combat-highlights.js");
-const { genDetailsSchema } = require("./gen-details.js");
-const { raceSchema } = require("./race.js");
-const { charClassSchema } = require("./char-class.js");
-const { bonusSchema } = require("./bonus.js");
-const { conditionSchema } = require("./condition.js");
 
 // Following Monster Manual Stat Block Overview as guide
 const characterSchema = new mongoose.Schema({
-	bonus: {
-		// Consumables that benefit character
-		type: [bonusSchema],
-	},
 	combatHighlights: {
 		type: combatHighlightsSchema,
 	},
-	condition: {
-		type: [conditionSchema],
+	hasBardicInsp: {
+		type: Boolean,
+		default: false,
 	},
-	genDetails: {
-		type: genDetailsSchema,
+	hasHeroicInsp: {
+		type: Boolean,
+		default: false,
+	},
+	name: {
+		type: String,
 	},
 	position: {
 		x: {
@@ -43,7 +39,13 @@ const characterSchema = new mongoose.Schema({
 		},
 		default: "NPC",
 	},
+	notes: {
+		type: String,
+	},
 });
 
+if (mongoose.models && mongoose.models.Character) {
+	delete mongoose.models.Character;
+}
 const Character = mongoose.model("character", characterSchema);
 module.exports = { Character };

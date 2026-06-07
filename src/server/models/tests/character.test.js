@@ -1,9 +1,6 @@
 const mongoose = require("mongoose");
 const dbHandler = require("./db-handler.js");
 
-const { GenDetails } = require("../gen-details.js");
-const { Race } = require("../race.js");
-const { CharClass } = require("../char-class.js");
 const { CombatHighlights } = require("../combat-highlights.js");
 const { Character } = require("../character.js");
 
@@ -19,32 +16,25 @@ describe("Character Model Unit Tests", () => {
 			y: 0,
 		};
 		const testName = "Alfie";
-		const testGenDet = new GenDetails({
-			name: testName,
-		});
+
 		const validCharacter = new Character({
-			genDetails: testGenDet,
+			name: testName,
 		});
 
 		const savedCharacter = await validCharacter.save();
 
 		expect(savedCharacter._id).toBeDefined();
-		expect(savedCharacter.bonus).toEqual([]);
 		expect(savedCharacter.combatHighlights).toBeUndefined();
-		expect(savedCharacter.condition).toEqual([]);
+		expect(savedCharacter.hasBardicInsp).toBe(false); // default value
+		expect(savedCharacter.hasHeroicInsp).toBe(false); // default value
 		expect(savedCharacter.position).toMatchObject(defaultPos);
-		expect(savedCharacter.genDetails.toObject()).toMatchObject(
-			testGenDet.toObject(),
-		);
+		expect(savedCharacter.name).toEqual(testName);
 	});
 
 	it("should fail if position < 0", async () => {
 		const testName = "Alfie";
-		const testGenDet = new GenDetails({
-			name: testName,
-		});
 		const invalidCharacter = new Character({
-			genDetails: testGenDet,
+			name: testName,
 			position: {
 				x: -1,
 				y: -2,
