@@ -2,8 +2,6 @@ const mongoose = require("mongoose");
 const dbHandler = require("./db-handler.js");
 
 const { GenDetails } = require("../gen-details.js");
-const { Race } = require("../race.js");
-const { CharClass } = require("../char-class.js");
 const { CombatHighlights } = require("../combat-highlights.js");
 const { Character } = require("../character.js");
 
@@ -31,7 +29,6 @@ describe("Character Model Unit Tests", () => {
 		expect(savedCharacter._id).toBeDefined();
 		expect(savedCharacter.bonus).toEqual([]);
 		expect(savedCharacter.combatHighlights).toBeUndefined();
-		expect(savedCharacter.condition).toEqual([]);
 		expect(savedCharacter.position).toMatchObject(defaultPos);
 		expect(savedCharacter.genDetails.toObject()).toMatchObject(
 			testGenDet.toObject(),

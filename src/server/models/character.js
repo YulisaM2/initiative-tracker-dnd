@@ -2,10 +2,7 @@ const mongoose = require("mongoose");
 
 const { combatHighlightsSchema } = require("./combat-highlights.js");
 const { genDetailsSchema } = require("./gen-details.js");
-const { raceSchema } = require("./race.js");
-const { charClassSchema } = require("./char-class.js");
 const { bonusSchema } = require("./bonus.js");
-const { conditionSchema } = require("./condition.js");
 
 // Following Monster Manual Stat Block Overview as guide
 const characterSchema = new mongoose.Schema({
@@ -15,9 +12,6 @@ const characterSchema = new mongoose.Schema({
 	},
 	combatHighlights: {
 		type: combatHighlightsSchema,
-	},
-	condition: {
-		type: [conditionSchema],
 	},
 	genDetails: {
 		type: genDetailsSchema,
@@ -42,6 +36,9 @@ const characterSchema = new mongoose.Schema({
 			values: ["Player", "NPC"],
 		},
 		default: "NPC",
+	},
+	notes: {
+		type: String,
 	},
 });
 
