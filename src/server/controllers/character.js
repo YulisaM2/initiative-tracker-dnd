@@ -92,7 +92,6 @@ exports.updateCombatHigh = (req, res) => {
 exports.updateHasBardicInsp = (req, res) => {
 	// Extract data to update
 	const { hasBardicInsp } = req.body;
-	console.log(hasBardicInsp);
 	const toUpdate = {};
 
 	// Checking if boolean is set
@@ -106,12 +105,23 @@ exports.updateHasBardicInsp = (req, res) => {
 exports.updateHasHeroicInsp = (req, res) => {
 	// Extract data to update
 	const { hasHeroicInsp } = req.body;
-	console.log(hasHeroicInsp);
 	const toUpdate = {};
 
 	// Checking if boolean is set
 	if (hasHeroicInsp !== undefined && hasHeroicInsp !== null)
 		toUpdate["hasHeroicInsp"] = hasHeroicInsp;
+
+	// Updating
+	updateCharInDb(req.params.charId, toUpdate, res);
+};
+
+exports.updateNotes = (req, res) => {
+	// Extract data to update
+	const { notes } = req.body;
+	const toUpdate = {};
+
+	// Checking if boolean is set
+	if (notes) toUpdate["notes"] = notes;
 
 	// Updating
 	updateCharInDb(req.params.charId, toUpdate, res);

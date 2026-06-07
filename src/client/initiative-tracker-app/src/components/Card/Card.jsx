@@ -5,6 +5,7 @@ import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
 import { Bonus } from "./Bonus";
+import Notes from "./Notes";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
 
@@ -21,12 +22,15 @@ const Card = ({ character }) => {
 
 	const { enableScreenDrag, setSelectedCharacter, updateCharacterInContext } =
 		useContext(CardContext);
+
+	// Getting values to populate card
 	const characterName = character.name || "";
 	const role = character.role;
 	const characterAC = character?.combatHighlights?.armorClass || "";
 	const characterPP = character?.combatHighlights?.passivePercept || "";
 	const hasBardicInsp = character?.hasBardicInsp || "";
 	const hasHeroicInsp = character?.hasHeroicInsp || "";
+	const characterNotes = character?.notes || "";
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -34,14 +38,11 @@ const Card = ({ character }) => {
 	const cardRef = useRef(null);
 
 	// Set up for card expansion
-	// const textAreaRef = useRef(null);
-	// const limitNotes = window.innerHeight * 0.4;
 	const textAreaNameRef = useRef(null);
 	const limitName = window.innerHeight * 0.15;
 
 	// So that we can use autoGrow on load (adjust size if prefilled db)
 	useEffect(() => {
-		// autoGrow(textAreaRef);
 		autoGrow(textAreaNameRef);
 		bringToFront(cardRef.current);
 	}, []);
@@ -244,16 +245,15 @@ const Card = ({ character }) => {
 						onLoadingChange={handleFieldLoading}
 					></Bonus>
 				</div>
-				{/* <textarea
-					ref={textAreaRef}
-					className='react-transform-component-no-drag'
-					defaultValue={characterName}
-					onInput={() => {
-						autoGrow(textAreaRef, limitNotes);
-					}}
-					onKeyUp={handleKeyUp}
-					onKeyDown={(e) => e.stopPropagation()}
-				></textarea> */}
+				<div className='notes-container'>
+					<Notes
+						className='react-transform-component-no-drag'
+						defaultValue={characterNotes}
+						url={import.meta.env.VITE_API_NOTES_URL}
+						id={character._id}
+						onLoadingChange={handleFieldLoading}
+					></Notes>
+				</div>
 			</div>
 		</div>
 	);

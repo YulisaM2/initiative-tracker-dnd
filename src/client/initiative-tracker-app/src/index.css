@@ -483,3 +483,19 @@ textarea:focus {
 	stroke: none !important;
 	filter: url(#red-glow) !important;
 }
+
+.notes-container {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	box-sizing: border-box;
+	margin-top: 15px;
+}
+
+.notes-divider {
+	width: 100%;
+	height: 1.5px;
+	background-color: #d4a35d;
+	margin-bottom: 12px;
+	border: none !important;
+}

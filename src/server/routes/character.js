@@ -21,6 +21,7 @@ router
 router
 	.route("/:charId/heroic-inspiration")
 	.patch(controller.updateHasHeroicInsp);
+router.route("/:charId/notes").patch(controller.updateNotes);
 
 router
 	.route("/:charId")
