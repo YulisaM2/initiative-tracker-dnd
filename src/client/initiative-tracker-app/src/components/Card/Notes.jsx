@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 import { autoGrow } from "../Card/Card.utils";
 import { CardContext } from "../../context/CardContext";
+import { DELAY_INPUT_FIRE } from "../../assets/constants";
 
 import Divider from "../../icons/Divider";
 
@@ -18,7 +19,6 @@ const Notes = ({
 	// Tracking general states for query
 	const { updateCharacterInContext } = useContext(CardContext);
 	const saveTimer = useRef(null);
-	const delay = 1000;
 
 	// Setup for card expanison
 	const textAreaNotesRef = useRef(null);
@@ -60,7 +60,7 @@ const Notes = ({
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}
-		}, delay);
+		}, DELAY_INPUT_FIRE);
 	};
 	return (
 		<div className='notes-section'>

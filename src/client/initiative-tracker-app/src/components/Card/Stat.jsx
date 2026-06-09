@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
+import { MAX_LENGTH_STAT, DELAY_INPUT_FIRE } from "../../assets/constants";
 
 export const Stat = ({
 	id,
@@ -15,10 +16,6 @@ export const Stat = ({
 	// Tracking general states for query
 	const { updateCharacterInContext } = useContext(CardContext);
 	const saveTimer = useRef(null);
-
-	// Stats should only have 2 digits
-	const maxLenght = 2;
-	const delay = 1000;
 
 	// Transform 0 or empty into - for readability
 	const formatInitialValue = (val) =>
@@ -46,8 +43,8 @@ export const Stat = ({
 		if (cleanValue) cleanValue = String(parseInt(cleanValue, 10));
 
 		// Keeping value at 2 digits
-		if (cleanValue.length > maxLenght)
-			cleanValue = cleanValue.slice(0, maxLenght);
+		if (cleanValue.length > MAX_LENGTH_STAT)
+			cleanValue = cleanValue.slice(0, MAX_LENGTH_STAT);
 
 		// Checking that input changed at all
 		// Here to avoid triggering loading animation
@@ -86,7 +83,7 @@ export const Stat = ({
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}
-		}, delay);
+		}, DELAY_INPUT_FIRE);
 	};
 
 	return (

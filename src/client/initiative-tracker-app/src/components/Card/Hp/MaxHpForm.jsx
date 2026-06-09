@@ -3,6 +3,10 @@ import axios from "axios";
 import { toast } from "sonner";
 
 import { CardContext } from "../../../context/CardContext";
+import {
+	MAX_LENGTH_HP,
+	DELAY_SPINNER_TRIGGER,
+} from "../../../assets/constants";
 
 export const MaxHpForm = ({
 	id,
@@ -18,8 +22,6 @@ export const MaxHpForm = ({
 
 	const [value, setValue] = useState(formatInitialValue(defaultValue));
 	const [enableMaxHp, setMaxHp] = useState(false);
-	const maxLength = 3;
-	const delay = 300;
 
 	useEffect(() => {
 		setValue(formatInitialValue(defaultValue));
@@ -28,8 +30,8 @@ export const MaxHpForm = ({
 	const handleInputChange = (e) => {
 		let cleanValue = e.target.value.replace(/\D/g, "");
 		if (cleanValue) cleanValue = String(parseInt(cleanValue, 10));
-		if (cleanValue.length > maxLength)
-			cleanValue = cleanValue.slice(0, maxLength);
+		if (cleanValue.length > MAX_LENGTH_HP)
+			cleanValue = cleanValue.slice(0, MAX_LENGTH_HP);
 		setValue(cleanValue);
 	};
 
@@ -47,7 +49,7 @@ export const MaxHpForm = ({
 					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_MAX_HP_URL}`,
 					payload,
 				),
-				new Promise((resolve) => setTimeout(resolve, delay)),
+				new Promise((resolve) => setTimeout(resolve, DELAY_SPINNER_TRIGGER)),
 			]);
 
 			if (response.data) {

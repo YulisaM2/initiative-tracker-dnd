@@ -3,8 +3,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
-import BassClef from "../../icons/Bonus/BassClef";
-import Hero from "../../icons/Bonus/Hero";
+import { DELAY_SPINNER_TRIGGER, BONUS_ICONS } from "../../assets/constants.js";
 
 export const Bonus = ({
 	id,
@@ -16,14 +15,8 @@ export const Bonus = ({
 }) => {
 	// Tracking general states for query
 	const { updateCharacterInContext } = useContext(CardContext);
-	const delay = 300;
 
-	// To set icon corresponding to theme/value
-	const INSP_ICONS = {
-		hasBardicInsp: BassClef,
-		hasHeroicInsp: Hero,
-	};
-	const SelectedIcon = INSP_ICONS[bonusName];
+	const SelectedIcon = BONUS_ICONS[bonusName];
 
 	// To apply style of inactive vs active
 	const combinedButtonClass = `bonus-bttn ${className || ""} ${defaultValue ? "active" : "inactive"}`;
@@ -44,7 +37,7 @@ export const Bonus = ({
 					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${url}`,
 					payload,
 				),
-				new Promise((resolve) => setTimeout(resolve, delay)),
+				new Promise((resolve) => setTimeout(resolve, DELAY_SPINNER_TRIGGER)),
 			]);
 
 			if (response.data) updateCharacterInContext(id, response.data);

@@ -10,6 +10,7 @@ import { MaxHp } from "./Hp/MaxHp";
 import Notes from "./Notes";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
+import { DELAY_INPUT_FIRE } from "../../assets/constants";
 
 const Card = ({ character }) => {
 	// Tracking general states for query
@@ -163,7 +164,6 @@ const Card = ({ character }) => {
 	// As we update any area in the card, trigger auto save
 	const handleKeyUp = async () => {
 		setLoading(true);
-		const delay = 1000; // ms
 
 		// If we were already tracking, restart as new input was introduced
 		if (keyUpTimer.current) clearTimeout(keyUpTimer.current);
@@ -172,7 +172,7 @@ const Card = ({ character }) => {
 		keyUpTimer.current = setTimeout(() => {
 			updateCardPos(cardRef.current);
 			updateCharacterName(textAreaNameRef.current.value);
-		}, delay);
+		}, DELAY_INPUT_FIRE);
 	};
 
 	return (
