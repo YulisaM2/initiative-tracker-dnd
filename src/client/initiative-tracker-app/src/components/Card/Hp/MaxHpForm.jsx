@@ -7,6 +7,7 @@ import {
 	MAX_LENGTH_HP,
 	DELAY_SPINNER_TRIGGER,
 } from "../../../assets/constants";
+import { cleanNumber, formatToNumber } from "../Stat.utils";
 
 export const MaxHpForm = ({
 	id,
@@ -17,22 +18,19 @@ export const MaxHpForm = ({
 }) => {
 	const { updateCharacterInContext } = useContext(CardContext);
 
-	const formatInitialValue = (val) =>
-		val === 0 || val === undefined || val === null ? "" : String(val);
-
-	const [value, setValue] = useState(formatInitialValue(defaultValue));
+	const [value, setValue] = useState(formatToNumber(defaultValue));
 	const [enableMaxHp, setMaxHp] = useState(false);
 
 	useEffect(() => {
-		setValue(formatInitialValue(defaultValue));
+		setValue(formatToNumber(defaultValue));
 	}, [defaultValue]);
 
 	const handleInputChange = (e) => {
-		let cleanValue = e.target.value.replace(/\D/g, "");
-		if (cleanValue) cleanValue = String(parseInt(cleanValue, 10));
-		if (cleanValue.length > MAX_LENGTH_HP)
-			cleanValue = cleanValue.slice(0, MAX_LENGTH_HP);
-		setValue(cleanValue);
+		const cleanedNum = cleanNumber(e.target.value, value, MAX_LENGTH_HP);
+
+		if (cleanedNum === null) return;
+
+		setValue(cleanedNum);
 	};
 
 	const handleMaxHpSubmit = async (e) => {

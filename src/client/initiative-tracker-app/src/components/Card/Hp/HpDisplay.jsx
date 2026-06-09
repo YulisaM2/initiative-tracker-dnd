@@ -1,6 +1,8 @@
 import { useState } from "react";
 
 import { Stat } from "../Stat";
+import { MAX_LENGTH_HP } from "../../../assets/constants";
+import { cleanNumber } from "../Stat.utils";
 
 export const HpDisplay = ({
 	id,
@@ -21,6 +23,19 @@ export const HpDisplay = ({
 		// Clean up after updating Hps
 		setModifierAmount("");
 	};
+
+	const handleModifierChange = (e) => {
+		const cleanedNum = cleanNumber(
+			e.target.value,
+			modifierAmount,
+			MAX_LENGTH_HP,
+		);
+
+		if (cleanedNum === null) return;
+
+		setModifierAmount(cleanedNum === 0 ? "" : cleanedNum);
+	};
+
 	return (
 		<div className='stat-container max-hp-display-mode'>
 			<div className='hp-mod-controls'>
@@ -59,7 +74,7 @@ export const HpDisplay = ({
 					pattern='[0-9]*'
 					placeholder='0'
 					value={modifierAmount}
-					onChange={(e) => setModifierAmount(e.target.value.replace(/\D/g, ""))}
+					onChange={handleModifierChange}
 				/>
 				<button
 					className='heal-bttn'

@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
 import { MAX_LENGTH_STAT, DELAY_INPUT_FIRE } from "../../assets/constants";
+import { cleanNumber, formatToNumber } from "./Stat.utils";
 
 export const Stat = ({
 	id,
@@ -18,13 +19,13 @@ export const Stat = ({
 	const saveTimer = useRef(null);
 
 	// Transform 0 or empty into - for readability
-	const formatInitialValue = (val) =>
-		val === 0 || val === undefined || val === null ? "" : String(val);
-	const [value, setValue] = useState(formatInitialValue(defaultValue));
+	const [value, setValue] = useState(formatToNumber(defaultValue));
 
 	useEffect(() => {
-		setValue(formatInitialValue(defaultValue));
-	}, [defaultValue]);
+		if (defaultValue !== undefined && defaultValue !== null) {
+			setValue(formatToNumber(defaultValue));
+		}
+	}, [defaultValue]); // This dependency array tells React to re-run whenever defaultV
 
 	// Controlling how often to query db (avoid spamming)
 	// Timmer will trigger when component unmounts (updates)
@@ -36,27 +37,11 @@ export const Stat = ({
 	}, []);
 
 	const updateStat = async (e) => {
-		// Removing characters that aren't digits
-		let cleanValue = e.target.value.replace(/\D/g, "");
+		const cleanedNum = cleanNumber(e.target.value, value, MAX_LENGTH_STAT);
 
-		// Removing leading 0s
-		if (cleanValue) cleanValue = String(parseInt(cleanValue, 10));
+		if (cleanedNum === null) return;
 
-		// Keeping value at 2 digits
-		if (cleanValue.length > MAX_LENGTH_STAT)
-			cleanValue = cleanValue.slice(0, MAX_LENGTH_STAT);
-
-		// Checking that input changed at all
-		// Here to avoid triggering loading animation
-		if (cleanValue === value) return;
-
-		setValue(cleanValue);
-
-		// Handling emptying of field -> set stat to 0 in db
-		cleanValue === "" ? 0 : Number(cleanValue);
-
-		// If empty set 0
-		cleanValue = cleanValue === "" ? 0 : Number(cleanValue);
+		setValue(cleanedNum);
 
 		if (onLoadingChange) onLoadingChange(true);
 		if (saveTimer) clearTimeout(saveTimer.current);
@@ -67,7 +52,7 @@ export const Stat = ({
 				// Format payload
 				const payload = {
 					combatHighlights: {
-						[statName]: cleanValue,
+						[statName]: cleanedNum,
 					},
 				};
 
