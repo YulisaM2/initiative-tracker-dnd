@@ -10,9 +10,7 @@ const express = require("express"),
 
 // For security,
 // 1. Security headers againts cross-site tracking + injection scripts
-// 2. Sanitizing queries before they reach db
 const helmet = require("helmet");
-const mongoSanitize = require("express-mongo-sanitize");
 
 // Middleware
 app.use(bodyParser.json());
@@ -44,20 +42,6 @@ app.use(
 );
 
 app.use(helmet());
-
-// For Express 5 compatibility,
-// Making req.query mutable for all routes for now
-app.use((req, res, next) => {
-	Object.defineProperty(req, "query", {
-		value: { ...req.query },
-		writable: true,
-		configurable: true,
-		enumerable: true,
-	});
-	next();
-});
-
-app.use(mongoSanitize());
 
 // Connecting to db
 const mongoose = require("mongoose");
