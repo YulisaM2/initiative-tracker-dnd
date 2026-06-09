@@ -207,6 +207,7 @@ const Card = ({ character }) => {
 					placeholder='Character Name'
 					defaultValue={characterName}
 					rows={1}
+					spellCheck={false}
 					onInput={(e) => {
 						// Remove leading spaces
 						e.target.value = e.target.value.replace(/^\s+/, "");

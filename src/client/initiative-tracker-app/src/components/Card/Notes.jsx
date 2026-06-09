@@ -78,6 +78,7 @@ const Notes = ({
 				onChange={(e) => {
 					if (onInput) onInput(e);
 				}}
+				spellCheck={false}
 			></textarea>
 		</div>
 	);
