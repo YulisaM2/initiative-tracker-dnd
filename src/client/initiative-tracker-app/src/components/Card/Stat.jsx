@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
 
@@ -12,7 +13,6 @@ export const Stat = ({
 	onLoadingChange,
 }) => {
 	// Tracking general states for query
-	const [err, setError] = useState(null);
 	const { updateCharacterInContext } = useContext(CardContext);
 	const saveTimer = useRef(null);
 
@@ -82,7 +82,7 @@ export const Stat = ({
 
 				if (response.data) updateCharacterInContext(id, response.data);
 			} catch (error) {
-				setError(error.message);
+				toast.error(error.message);
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}

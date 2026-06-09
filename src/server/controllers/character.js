@@ -83,6 +83,12 @@ exports.updateCombatHigh = (req, res) => {
 		if (combatHighlights.passivePercept !== undefined)
 			toUpdate["combatHighlights.passivePercept"] =
 				combatHighlights.passivePercept;
+
+		if (combatHighlights.currHitPoint !== undefined)
+			toUpdate["combatHighlights.currHitPoint"] = combatHighlights.currHitPoint;
+
+		if (combatHighlights.tempHitPoint !== undefined)
+			toUpdate["combatHighlights.tempHitPoint"] = combatHighlights.tempHitPoint;
 	}
 
 	// Updating
@@ -92,7 +98,6 @@ exports.updateCombatHigh = (req, res) => {
 exports.updateHasBardicInsp = (req, res) => {
 	// Extract data to update
 	const { hasBardicInsp } = req.body;
-	console.log(hasBardicInsp);
 	const toUpdate = {};
 
 	// Checking if boolean is set
@@ -106,7 +111,6 @@ exports.updateHasBardicInsp = (req, res) => {
 exports.updateHasHeroicInsp = (req, res) => {
 	// Extract data to update
 	const { hasHeroicInsp } = req.body;
-	console.log(hasHeroicInsp);
 	const toUpdate = {};
 
 	// Checking if boolean is set
@@ -115,6 +119,88 @@ exports.updateHasHeroicInsp = (req, res) => {
 
 	// Updating
 	updateCharInDb(req.params.charId, toUpdate, res);
+};
+
+exports.updateNotes = (req, res) => {
+	// Extract data to update
+	const { notes } = req.body;
+	const toUpdate = {};
+
+	if (notes !== undefined) toUpdate["notes"] = notes;
+
+	// Updating
+	updateCharInDb(req.params.charId, toUpdate, res);
+};
+
+exports.updateMaxHp = (req, res) => {
+	// Extract data to update
+	const { combatHighlights } = req.body;
+	const toUpdate = {};
+
+	// Assuming the current Hp will be the max
+	if (combatHighlights.maxHitPoint !== undefined) {
+		toUpdate["combatHighlights.maxHitPoint"] = combatHighlights.maxHitPoint;
+		toUpdate["combatHighlights.currHitPoint"] = combatHighlights.maxHitPoint;
+	}
+	// Updating
+	updateCharInDb(req.params.charId, toUpdate, res);
+};
+
+exports.updateCurrHp = (req, res) => {
+	// Extract data to update
+	const { combatHighlights } = req.body;
+	const toUpdate = {};
+
+	if (combatHighlights.currHitPoint !== undefined)
+		toUpdate["combatHighlights.currHitPoint"] = combatHighlights.currHitPoint;
+
+	// Updating
+	updateCharInDb(req.params.charId, toUpdate, res);
+};
+
+exports.modifyHp = async (req, res) => {
+	const { actionType, amount } = req.body;
+
+	// Get data
+	const character = await db.Character.findById(req.params.charId);
+	if (!character)
+		return res.status(404).json({ message: "Character not found!" });
+
+	let currHp = character.combatHighlights.currHitPoint || 0;
+	let tempHp = character.combatHighlights.tempHitPoint || 0;
+	let maxHp = character.combatHighlights.maxHitPoint || 0;
+
+	// Perform heal or damage
+	if (actionType === "heal") {
+		// Heal can only heal until maxHp
+		currHp = Math.min(currHp + amount, maxHp);
+	} else if (actionType == "damage") {
+		// Should substract first from tempHp if available
+		let remainer = amount;
+		if (tempHp > 0) {
+			if (remainer >= tempHp) {
+				remainer -= tempHp;
+				tempHp = 0;
+			} else {
+				tempHp -= remainer;
+				remainer = 0;
+			}
+		}
+
+		// Substract remained from Hp (Min val of Hp is 0)
+		if (remainer > 0) currHp = Math.max(currHp - remainer, 0);
+	}
+
+	character.combatHighlights.currHitPoint = currHp;
+	character.combatHighlights.tempHitPoint = tempHp;
+	await character
+		.save()
+		.then((updatedChar) => {
+			res.json(updatedChar);
+		})
+		.catch((err) => {
+			res.send(err);
+		});
 };
 
 exports.deleteChar = (req, res) => {

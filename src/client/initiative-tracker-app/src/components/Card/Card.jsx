@@ -1,10 +1,13 @@
 import { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
 import { Bonus } from "./Bonus";
+import { MaxHp } from "./Hp/MaxHp";
+import Notes from "./Notes";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
 
@@ -16,17 +19,22 @@ const Card = ({ character }) => {
 		setLoading(isLoading);
 	};
 
-	const [err, setError] = useState(null);
 	const keyUpTimer = useRef(null);
 
 	const { enableScreenDrag, setSelectedCharacter, updateCharacterInContext } =
 		useContext(CardContext);
+
+	// Getting values to populate card
 	const characterName = character.name || "";
 	const role = character.role;
 	const characterAC = character?.combatHighlights?.armorClass || "";
 	const characterPP = character?.combatHighlights?.passivePercept || "";
 	const hasBardicInsp = character?.hasBardicInsp || "";
 	const hasHeroicInsp = character?.hasHeroicInsp || "";
+	const characterNotes = character?.notes || "";
+	const characterMaxHp = character?.combatHighlights?.maxHitPoint || "";
+	const characterCurrHp = character?.combatHighlights?.currHitPoint || "";
+	const characterTempHp = character?.combatHighlights?.tempHitPoint || "";
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -34,15 +42,12 @@ const Card = ({ character }) => {
 	const cardRef = useRef(null);
 
 	// Set up for card expansion
-	// const textAreaRef = useRef(null);
-	// const limitNotes = window.innerHeight * 0.4;
 	const textAreaNameRef = useRef(null);
 	const limitName = window.innerHeight * 0.15;
 
 	// So that we can use autoGrow on load (adjust size if prefilled db)
 	useEffect(() => {
-		// autoGrow(textAreaRef);
-		autoGrow(textAreaNameRef);
+		autoGrow(textAreaNameRef, limitName);
 		bringToFront(cardRef.current);
 	}, []);
 
@@ -127,7 +132,7 @@ const Card = ({ character }) => {
 				payload,
 			);
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		} finally {
 			setLoading(false);
 		}
@@ -149,7 +154,7 @@ const Card = ({ character }) => {
 			);
 			if (response.data) updateCharacterInContext(character._id, response.data);
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		} finally {
 			setLoading(false);
 		}
@@ -202,13 +207,26 @@ const Card = ({ character }) => {
 					placeholder='Character Name'
 					defaultValue={characterName}
 					rows={1}
-					onInput={() => {
+					onInput={(e) => {
+						// Remove leading spaces
+						e.target.value = e.target.value.replace(/^\s+/, "");
 						autoGrow(textAreaNameRef, limitName);
 					}}
 					onKeyUp={handleKeyUp}
 					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
-				<div className='stats-container'>
+				<div className='stats-container health-row'>
+					<MaxHp
+						className='react-transform-component-no-drag'
+						name='maxHitPoint'
+						defaultValue={characterMaxHp}
+						currentValue={characterCurrHp}
+						tempValue={characterTempHp}
+						id={character._id}
+						onLoadingChange={handleFieldLoading}
+					/>
+				</div>
+				<div className='stats-container combat-row'>
 					<Stat
 						className='armor-class-input react-transform-component-no-drag'
 						statName='armorClass'
@@ -216,7 +234,7 @@ const Card = ({ character }) => {
 						defaultValue={characterAC}
 						id={character._id}
 						onLoadingChange={handleFieldLoading}
-					></Stat>
+					/>
 					<Stat
 						className='passive-percept-input react-transform-component-no-drag'
 						statName='passivePercept'
@@ -224,36 +242,38 @@ const Card = ({ character }) => {
 						defaultValue={characterPP}
 						id={character._id}
 						onLoadingChange={handleFieldLoading}
-					></Stat>
+					/>
 				</div>
 				<div className='stats-container'>
-					<Bonus
-						className='bardic-insp-bttn react-transform-component-no-drag'
-						bonusName='hasBardicInsp'
-						defaultValue={hasBardicInsp}
-						url={import.meta.env.VITE_API_BARDIC_INSPIRATION_URL}
-						id={character._id}
-						onLoadingChange={handleFieldLoading}
-					></Bonus>
-					<Bonus
-						className='heroic-insp-bttn react-transform-component-no-drag'
-						bonusName='hasHeroicInsp'
-						defaultValue={hasHeroicInsp}
-						url={import.meta.env.VITE_API_HEROIC_INSPIRATION_URL}
-						id={character._id}
-						onLoadingChange={handleFieldLoading}
-					></Bonus>
+					<div className='stat-label'>Bonus</div>
+					<div className='bonus-row'>
+						<Bonus
+							className='bardic-insp-bttn react-transform-component-no-drag'
+							bonusName='hasBardicInsp'
+							defaultValue={hasBardicInsp}
+							url={import.meta.env.VITE_API_BARDIC_INSPIRATION_URL}
+							id={character._id}
+							onLoadingChange={handleFieldLoading}
+						></Bonus>
+						<Bonus
+							className='heroic-insp-bttn react-transform-component-no-drag'
+							bonusName='hasHeroicInsp'
+							defaultValue={hasHeroicInsp}
+							url={import.meta.env.VITE_API_HEROIC_INSPIRATION_URL}
+							id={character._id}
+							onLoadingChange={handleFieldLoading}
+						></Bonus>
+					</div>
 				</div>
-				{/* <textarea
-					ref={textAreaRef}
-					className='react-transform-component-no-drag'
-					defaultValue={characterName}
-					onInput={() => {
-						autoGrow(textAreaRef, limitNotes);
-					}}
-					onKeyUp={handleKeyUp}
-					onKeyDown={(e) => e.stopPropagation()}
-				></textarea> */}
+				<div className='notes-container'>
+					<Notes
+						className='react-transform-component-no-drag'
+						defaultValue={characterNotes}
+						url={import.meta.env.VITE_API_NOTES_URL}
+						id={character._id}
+						onLoadingChange={handleFieldLoading}
+					></Notes>
+				</div>
 			</div>
 		</div>
 	);

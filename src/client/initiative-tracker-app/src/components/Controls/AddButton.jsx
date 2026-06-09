@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useRef, useState, useContext } from "react";
+import { toast } from "sonner";
 
 import Plus from "../../icons/Controls/Plus";
 import { CardContext } from "../../context/CardContext";
@@ -7,7 +8,6 @@ import { CardContext } from "../../context/CardContext";
 export const AddButton = () => {
 	// Tracking general states
 	const [loading, setLoading] = useState(false);
-	const [err, setError] = useState(null);
 	const startPos = useRef(window.innerHeight * 0.25); // targetting natural viewpoint during creation
 	const { setCharacters } = useContext(CardContext);
 
@@ -30,7 +30,7 @@ export const AddButton = () => {
 			);
 			setCharacters((prevState) => [response.data, ...prevState]);
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		} finally {
 			setLoading(false);
 		}

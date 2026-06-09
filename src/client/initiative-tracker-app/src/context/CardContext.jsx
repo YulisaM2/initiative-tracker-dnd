@@ -16,10 +16,10 @@ const CardProvider = ({ children }) => {
 	// For navigating the screen with drag
 	const [enableScreenDrag, setScreenDrag] = useState(false);
 
-	const updateCharacterInContext = (characterId, updatedData) => {
+	const updateCharacterInContext = (characterId, updatedCharacter) => {
 		setCharacters((prevCharacters) =>
-			prevCharacters.map((char) =>
-				char._id === characterId ? { ...char, ...updatedData } : char,
+			prevCharacters.map(
+				(char) => (char._id === characterId ? updatedCharacter : char), // 🔴 Swap the whole object directly
 			),
 		);
 	};
