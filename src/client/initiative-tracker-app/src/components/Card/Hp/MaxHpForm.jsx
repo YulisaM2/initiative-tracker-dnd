@@ -7,7 +7,7 @@ import {
 	MAX_LENGTH_HP,
 	DELAY_SPINNER_TRIGGER,
 } from "../../../assets/constants";
-import { cleanNumber, formatToNumber } from "../Stat.utils";
+import { cleanNumber, formatToNumber } from "../helpers/Stat.utils";
 
 export const MaxHpForm = ({
 	id,

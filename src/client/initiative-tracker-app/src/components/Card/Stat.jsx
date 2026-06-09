@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
 import { MAX_LENGTH_STAT, DELAY_INPUT_FIRE } from "../../assets/constants";
-import { cleanNumber, formatToNumber } from "./Stat.utils";
+import { cleanNumber, formatToNumber } from "./helpers/Stat.utils";
 
 export const Stat = ({
 	id,

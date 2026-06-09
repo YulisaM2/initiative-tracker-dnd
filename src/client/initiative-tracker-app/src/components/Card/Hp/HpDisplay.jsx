@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Stat } from "../Stat";
 import { MAX_LENGTH_HP } from "../../../assets/constants";
-import { cleanNumber } from "../Stat.utils";
+import { cleanNumber } from "../helpers/Stat.utils";
 
 export const HpDisplay = ({
 	id,

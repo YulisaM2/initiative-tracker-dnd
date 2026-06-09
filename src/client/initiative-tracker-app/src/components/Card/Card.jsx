@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-import { autoGrow, bringToFront } from "../Card/Card.utils";
+import { autoGrow, bringToFront } from "../Card/helpers/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
 import { Bonus } from "./Bonus";

@@ -2,7 +2,7 @@ import { useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-import { autoGrow } from "../Card/Card.utils";
+import { autoGrow } from "../Card/helpers/Card.utils";
 import { CardContext } from "../../context/CardContext";
 import { DELAY_INPUT_FIRE } from "../../assets/constants";
 
