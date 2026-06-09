@@ -19,6 +19,7 @@ export const MaxHpForm = ({
 	const [value, setValue] = useState(formatInitialValue(defaultValue));
 	const [enableMaxHp, setMaxHp] = useState(false);
 	const maxLength = 3;
+	const delay = 300;
 
 	useEffect(() => {
 		setValue(formatInitialValue(defaultValue));
@@ -42,14 +43,17 @@ export const MaxHpForm = ({
 		try {
 			const payload = { combatHighlights: { maxHitPoint: cleanNumericValue } };
 
-			console.log(payload);
-			const response = await axios.patch(
-				`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_MAX_HP_URL}`,
-				payload,
-			);
+			const [response] = await Promise.all([
+				axios.patch(
+					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_MAX_HP_URL}`,
+					payload,
+				),
+				new Promise((resolve) => setTimeout(resolve, delay)),
+			]);
 
 			if (response.data) {
 				updateCharacterInContext(id, response.data);
+				setMaxHp(false);
 				if (onSaveSuccess) onSaveSuccess();
 			}
 		} catch (error) {
@@ -64,7 +68,7 @@ export const MaxHpForm = ({
 			<div className='stat-container'>
 				<div className='stat-label'>Max HP</div>
 				<button
-					className={`max-hp-bttn stat ${className || ""}`}
+					className={`set-max-hp-bttn stat ${className || ""}`}
 					onClick={() => setMaxHp(true)}
 				>
 					Set
@@ -77,25 +81,25 @@ export const MaxHpForm = ({
 		<div className='stat-container'>
 			<div className='stat-label'>Max HP</div>
 			<form onSubmit={handleMaxHpSubmit}>
-				<input
-					className={`stat ${className || ""}`}
-					type='text'
-					inputMode='numeric'
-					pattern='[0-9]*'
-					placeholder='-'
-					value={value}
-					onChange={handleInputChange}
-				/>
 				<div className='form-actions'>
-					<button type='submit' className='confirm-bttn'>
-						Confirm
-					</button>
 					<button
 						type='button'
 						className='cancel-bttn'
 						onClick={() => setMaxHp(false)}
 					>
 						Cancel
+					</button>
+					<input
+						className={`stat ${className || ""}`}
+						type='text'
+						inputMode='numeric'
+						pattern='[0-9]*'
+						placeholder='-'
+						value={value}
+						onChange={handleInputChange}
+					/>
+					<button type='submit' className='confirm-bttn'>
+						Confirm
 					</button>
 				</div>
 			</form>

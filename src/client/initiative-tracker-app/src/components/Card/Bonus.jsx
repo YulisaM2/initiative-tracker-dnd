@@ -45,7 +45,7 @@ export const Bonus = ({
 					payload,
 				),
 				new Promise((resolve) => setTimeout(resolve, delay)),
-			]); // 350ms smooth pad duration;
+			]);
 
 			if (response.data) updateCharacterInContext(id, response.data);
 		} catch (error) {

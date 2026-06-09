@@ -215,7 +215,7 @@ const Card = ({ character }) => {
 					onKeyUp={handleKeyUp}
 					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
-				<div className='stats-container'>
+				<div className='stats-container health-row'>
 					<MaxHp
 						className='react-transform-component-no-drag'
 						name='maxHitPoint'
@@ -223,9 +223,10 @@ const Card = ({ character }) => {
 						currentValue={characterCurrHp}
 						tempValue={characterTempHp}
 						id={character._id}
-					></MaxHp>
+						onLoadingChange={handleFieldLoading}
+					/>
 				</div>
-				<div className='stats-container'>
+				<div className='stats-container combat-row'>
 					<Stat
 						className='armor-class-input react-transform-component-no-drag'
 						statName='armorClass'
@@ -233,7 +234,7 @@ const Card = ({ character }) => {
 						defaultValue={characterAC}
 						id={character._id}
 						onLoadingChange={handleFieldLoading}
-					></Stat>
+					/>
 					<Stat
 						className='passive-percept-input react-transform-component-no-drag'
 						statName='passivePercept'
@@ -241,9 +242,9 @@ const Card = ({ character }) => {
 						defaultValue={characterPP}
 						id={character._id}
 						onLoadingChange={handleFieldLoading}
-					></Stat>
+					/>
 				</div>
-				<div className='stats-container vertical-stack'>
+				<div className='stats-container'>
 					<div className='stat-label'>Bonus</div>
 					<div className='bonus-row'>
 						<Bonus

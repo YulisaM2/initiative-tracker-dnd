@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 
 import { MaxHpForm } from "./MaxHpForm";
-import { MaxHpDisplay } from "./MaxHpDisplay";
+import { HpDisplay } from "./HpDisplay";
 import { CardContext } from "../../../context/CardContext";
 
 export const MaxHp = ({
@@ -13,9 +13,11 @@ export const MaxHp = ({
 	tempValue,
 	onLoadingChange,
 }) => {
-	// Allows the user to click the text to edit the Max HP later if needed
 	const [isEditing, setIsEditing] = useState(false);
+	const [isSaving, setIsSaving] = useState(false);
 	const { updateCharacterInContext } = useContext(CardContext);
+
+	const delay = 300;
 
 	const hasMaxHp =
 		defaultValue !== undefined &&
@@ -25,47 +27,57 @@ export const MaxHp = ({
 
 	const handleHpModifier = async (actionType, amount) => {
 		if (onLoadingChange) onLoadingChange(true);
+
+		let updatedData = null;
+
 		try {
 			const payload = { actionType, amount };
 
-			// Pointing to your new specialized backend route
-			const response = await axios.patch(
-				`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_MODIFY_HP_URL}`,
-				payload,
-			);
+			const [response] = await Promise.all([
+				axios.patch(
+					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_MODIFY_HP_URL}`,
+					payload,
+				),
+				new Promise((resolve) => setTimeout(resolve, delay)),
+			]);
 
 			if (response.data) {
-				updateCharacterInContext(id, response.data);
+				updatedData = response.data;
 			}
 		} catch (error) {
 			console.error("Failed to update health:", error.message);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
+			if (updatedData) {
+				updateCharacterInContext(id, updatedData);
+			}
 		}
 	};
 
-	// Show the form if there is no value OR if the user is editing it
-	if (!hasMaxHp || isEditing) {
+	const handleFormLoadingChange = (loadingState) => {
+		setIsSaving(loadingState);
+		if (onLoadingChange) onLoadingChange(loadingState);
+	};
+
+	if (!hasMaxHp || isEditing || isSaving) {
 		return (
 			<MaxHpForm
 				id={id}
 				className={`stat ${className || ""}`}
 				defaultValue={defaultValue}
-				onLoadingChange={onLoadingChange}
+				onLoadingChange={handleFormLoadingChange}
 				onSaveSuccess={() => setIsEditing(false)}
 			/>
 		);
 	}
 
-	// Show the sleek display layout once Max HP is present
 	return (
-		<MaxHpDisplay
+		<HpDisplay
 			id={id}
 			className={`stat ${className || ""}`}
 			maxHpValue={defaultValue}
 			currHpValue={currentValue}
 			tempValue={tempValue}
-			onEdit={() => setIsEditing(true)}
 			handleHpModifier={handleHpModifier}
 		/>
 	);
