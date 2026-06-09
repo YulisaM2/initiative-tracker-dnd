@@ -63,3 +63,14 @@ app.get("/", (req, res) => {
 // Routes
 const charRoutes = require("./routes/character");
 app.use("/api/character", charRoutes);
+
+// Catching any other route
+app.use("/api/*", (req, res) => {
+	res
+		.status(404)
+		.json({ error: "The page you are trying to reach doesn't exist" });
+});
+
+app.get("*", (req, res) => {
+	res.redirect("/");
+});
