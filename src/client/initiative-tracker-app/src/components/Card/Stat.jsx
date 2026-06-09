@@ -64,7 +64,24 @@ export const Stat = ({
 
 				if (response.data) updateCharacterInContext(id, response.data);
 			} catch (error) {
-				toast.error(error.message);
+				// Providing message error for validators
+				let toastMsg = "Validation failed";
+				const responseData = error.response?.data;
+				if (responseData && responseData.errors) {
+					// Looking for the first validation error from possible
+					// (Better to fix in order than spam banners with errors)
+					const allErrorsArray = Object.values(responseData.errors);
+					if (allErrorsArray.length > 0 && allErrorsArray[0].message) {
+						toastMsg = allErrorsArray[0].message;
+					}
+					// Defaulting to other/generic message if nothing specified found
+				} else if (responseData && responseData.message) {
+					toastMsg = responseData.message;
+				} else if (error.message) {
+					toastMsg = error.message;
+				}
+
+				toast.error(toastMsg);
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}

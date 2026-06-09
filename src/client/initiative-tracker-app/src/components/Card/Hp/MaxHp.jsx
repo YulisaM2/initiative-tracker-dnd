@@ -45,7 +45,7 @@ export const MaxHp = ({
 				updatedData = response.data;
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(error);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 			if (updatedData) {

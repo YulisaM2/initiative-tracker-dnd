@@ -47,9 +47,14 @@ export const Theme = ({ theme }) => {
 
 			updateCardTheme();
 		} catch (error) {
-			if (error.message?.includes("null"))
-				toast.error("Don't forget to select the character!");
-			else toast.error(error.message);
+			const backendMessage =
+				error.response?.data?.errors?.[`combatHighlights.${statName}`]
+					?.message ||
+				error.response?.data?.message ||
+				error.message;
+
+			// 2. Pop up the precise error message (e.g., "Current hit points cannot exceed...")
+			toast.error(backendMessage);
 		}
 	};
 

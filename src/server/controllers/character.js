@@ -40,13 +40,15 @@ const updateCharInDb = (id, toUpdate, res) => {
 		{
 			new: true, // respond with updatedChar,
 			runValidators: true,
+			context: "query",
 		},
 	)
 		.then((updatedChar) => {
 			res.json(updatedChar);
 		})
 		.catch((err) => {
-			res.send(err);
+			console.log(err);
+			res.status(400).send(err);
 		});
 };
 
