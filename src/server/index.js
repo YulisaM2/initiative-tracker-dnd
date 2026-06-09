@@ -8,6 +8,12 @@ const express = require("express"),
 	app = express(),
 	bodyParser = require("body-parser");
 
+// For security,
+// 1. Security headers againts cross-site tracking + injection scripts
+// 2. Sanitizing queries before they reach db
+const helmet = require("helmet");
+// const mongoSanitize = require("express-mongo-sanitize");
+
 // Middleware
 app.use(bodyParser.json());
 app.use(
@@ -36,6 +42,9 @@ app.use(
 		],
 	}),
 );
+
+app.use(helmet());
+// app.use(mongoSanitize());
 
 // Connecting to db
 const mongoose = require("mongoose");

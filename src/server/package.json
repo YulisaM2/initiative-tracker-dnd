@@ -19,6 +19,8 @@
     "body-parser": "^2.2.2",
     "cors": "^2.8.6",
     "express": "^5.2.1",
+    "express-mongo-sanitize": "^2.2.0",
+    "helmet": "^8.2.0",
     "mongoose": "^9.6.3"
   }
 }
