@@ -2,6 +2,8 @@ import { createContext } from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+import { DELAY_CLEAN_SELECTED } from "../assets/constants";
+
 export const CardContext = createContext();
 
 const CardProvider = ({ children }) => {
@@ -50,10 +52,9 @@ const CardProvider = ({ children }) => {
 	useEffect(() => {
 		if (!selectedCharacter) return;
 
-		const delay = 3000; // ms
 		const timer = setTimeout(() => {
 			setSelectedCharacter(null);
-		}, delay);
+		}, DELAY_CLEAN_SELECTED);
 
 		// Restart timer
 		return () => clearTimeout(timer);

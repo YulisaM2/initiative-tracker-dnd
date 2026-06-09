@@ -3,8 +3,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 import { CardContext } from "../context/CardContext";
-import Player from "../icons/Theme/Player";
-import Hidden from "../icons/Theme/Hidden";
+import { CONTROLS_ICONS } from "../assets/constants.js";
 
 // For now, color is indicative of type of role a character
 export const Theme = ({ theme }) => {
@@ -12,12 +11,7 @@ export const Theme = ({ theme }) => {
 	const { selectedCharacter, characters, setCharacters } =
 		useContext(CardContext);
 
-	// To set icon corresponding to theme/value
-	const MENU_ICONS = {
-		Player: Player,
-		Hidden: Hidden,
-	};
-	const SelectedIcon = MENU_ICONS[theme.icon];
+	const SelectedIcon = CONTROLS_ICONS[theme.icon];
 
 	const changeTheme = () => {
 		try {
@@ -53,9 +47,14 @@ export const Theme = ({ theme }) => {
 
 			updateCardTheme();
 		} catch (error) {
-			if (error.message?.includes("null"))
-				toast.error("Don't forget to select the character!");
-			else toast.error(error.message);
+			const backendMessage =
+				error.response?.data?.errors?.[`combatHighlights.${statName}`]
+					?.message ||
+				error.response?.data?.message ||
+				error.message;
+
+			// 2. Pop up the precise error message (e.g., "Current hit points cannot exceed...")
+			toast.error(backendMessage);
 		}
 	};
 

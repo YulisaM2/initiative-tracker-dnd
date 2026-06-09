@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { MaxHpForm } from "./MaxHpForm";
 import { HpDisplay } from "./HpDisplay";
 import { CardContext } from "../../../context/CardContext";
+import { DELAY_SPINNER_TRIGGER } from "../../../assets/constants";
 
 export const MaxHp = ({
 	id,
@@ -17,8 +18,6 @@ export const MaxHp = ({
 	const [isEditing, setIsEditing] = useState(false);
 	const [isSaving, setIsSaving] = useState(false);
 	const { updateCharacterInContext } = useContext(CardContext);
-
-	const delay = 300;
 
 	const hasMaxHp =
 		defaultValue !== undefined &&
@@ -39,14 +38,14 @@ export const MaxHp = ({
 					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_MODIFY_HP_URL}`,
 					payload,
 				),
-				new Promise((resolve) => setTimeout(resolve, delay)),
+				new Promise((resolve) => setTimeout(resolve, DELAY_SPINNER_TRIGGER)),
 			]);
 
 			if (response.data) {
 				updatedData = response.data;
 			}
 		} catch (error) {
-			toast.error(error.message);
+			toast.error(error);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 			if (updatedData) {

@@ -3,6 +3,8 @@ import axios from "axios";
 import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
+import { MAX_LENGTH_STAT, DELAY_INPUT_FIRE } from "../../assets/constants";
+import { cleanNumber, formatToNumber } from "./helpers/Stat.utils";
 
 export const Stat = ({
 	id,
@@ -16,18 +18,14 @@ export const Stat = ({
 	const { updateCharacterInContext } = useContext(CardContext);
 	const saveTimer = useRef(null);
 
-	// Stats should only have 2 digits
-	const maxLenght = 2;
-	const delay = 1000;
-
 	// Transform 0 or empty into - for readability
-	const formatInitialValue = (val) =>
-		val === 0 || val === undefined || val === null ? "" : String(val);
-	const [value, setValue] = useState(formatInitialValue(defaultValue));
+	const [value, setValue] = useState(formatToNumber(defaultValue));
 
 	useEffect(() => {
-		setValue(formatInitialValue(defaultValue));
-	}, [defaultValue]);
+		if (defaultValue !== undefined && defaultValue !== null) {
+			setValue(formatToNumber(defaultValue));
+		}
+	}, [defaultValue]); // This dependency array tells React to re-run whenever defaultV
 
 	// Controlling how often to query db (avoid spamming)
 	// Timmer will trigger when component unmounts (updates)
@@ -39,27 +37,11 @@ export const Stat = ({
 	}, []);
 
 	const updateStat = async (e) => {
-		// Removing characters that aren't digits
-		let cleanValue = e.target.value.replace(/\D/g, "");
+		const cleanedNum = cleanNumber(e.target.value, value, MAX_LENGTH_STAT);
 
-		// Removing leading 0s
-		if (cleanValue) cleanValue = String(parseInt(cleanValue, 10));
+		if (cleanedNum === null) return;
 
-		// Keeping value at 2 digits
-		if (cleanValue.length > maxLenght)
-			cleanValue = cleanValue.slice(0, maxLenght);
-
-		// Checking that input changed at all
-		// Here to avoid triggering loading animation
-		if (cleanValue === value) return;
-
-		setValue(cleanValue);
-
-		// Handling emptying of field -> set stat to 0 in db
-		cleanValue === "" ? 0 : Number(cleanValue);
-
-		// If empty set 0
-		cleanValue = cleanValue === "" ? 0 : Number(cleanValue);
+		setValue(cleanedNum);
 
 		if (onLoadingChange) onLoadingChange(true);
 		if (saveTimer) clearTimeout(saveTimer.current);
@@ -70,7 +52,7 @@ export const Stat = ({
 				// Format payload
 				const payload = {
 					combatHighlights: {
-						[statName]: cleanValue,
+						[statName]: cleanedNum,
 					},
 				};
 
@@ -82,11 +64,28 @@ export const Stat = ({
 
 				if (response.data) updateCharacterInContext(id, response.data);
 			} catch (error) {
-				toast.error(error.message);
+				// Providing message error for validators
+				let toastMsg = "Validation failed";
+				const responseData = error.response?.data;
+				if (responseData && responseData.errors) {
+					// Looking for the first validation error from possible
+					// (Better to fix in order than spam banners with errors)
+					const allErrorsArray = Object.values(responseData.errors);
+					if (allErrorsArray.length > 0 && allErrorsArray[0].message) {
+						toastMsg = allErrorsArray[0].message;
+					}
+					// Defaulting to other/generic message if nothing specified found
+				} else if (responseData && responseData.message) {
+					toastMsg = responseData.message;
+				} else if (error.message) {
+					toastMsg = error.message;
+				}
+
+				toast.error(toastMsg);
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}
-		}, delay);
+		}, DELAY_INPUT_FIRE);
 	};
 
 	return (

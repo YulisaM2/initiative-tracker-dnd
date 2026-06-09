@@ -1,17 +1,27 @@
 var db = require("../models");
 
+// 2. To avoid malicious NoSQL injections before they reach db
+const mongoSanitize = require("express-mongo-sanitize");
+
+const sanitizeInput = (data, options = {}) => {
+	if (!data) return data;
+	return mongoSanitize.sanitize(data, options);
+};
+
 exports.getChars = (req, res) => {
-	db.Character.find()
+	const cleanQuery = sanitizeInput(req.query);
+	db.Character.find(cleanQuery)
 		.then((chars) => {
 			res.json(chars);
 		})
 		.catch((err) => {
-			res.send(err);
+			res.status(500).send(err);
 		});
 };
 
 exports.createChar = (req, res) => {
-	const { position } = req.body;
+	const cleanBody = sanitizeInput(req.body);
+	const { position } = cleanBody;
 	db.Character.create({
 		position: position,
 	})
@@ -19,40 +29,48 @@ exports.createChar = (req, res) => {
 			res.status(201).json(newChar);
 		})
 		.catch((err) => {
-			res.send(err);
+			res.status(400).send(err);
 		});
 };
 
 exports.getChar = (req, res) => {
-	db.Character.findById(req.params.charId)
+	const cleanParams = sanitizeInput(req.params);
+	db.Character.findById(cleanParams.charId)
 		.then((foundChar) => {
 			res.json(foundChar);
 		})
 		.catch((err) => {
-			res.send(err);
+			res.status(400).send(err);
 		});
 };
 
 const updateCharInDb = (id, toUpdate, res) => {
+	const cleanId = sanitizeInput(id);
+	// Using allow dot so that payload can be built as <parent>.<child attribute>
+	const cleanUpdatePayload = sanitizeInput(toUpdate, { allowDots: true });
 	db.Character.findOneAndUpdate(
-		{ _id: id },
-		{ $set: toUpdate },
+		{ _id: cleanId },
+		{ $set: cleanUpdatePayload },
 		{
 			new: true, // respond with updatedChar,
 			runValidators: true,
+			context: "query",
 		},
 	)
 		.then((updatedChar) => {
 			res.json(updatedChar);
 		})
 		.catch((err) => {
-			res.send(err);
+			res.status(400).send(err);
 		});
 };
 
 exports.updateChar = (req, res) => {
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
+
 	// Extract data to update
-	const { name, position, role } = req.body;
+	const { name, position, role } = cleanBody;
 	const toUpdate = {};
 
 	if (name) {
@@ -68,12 +86,15 @@ exports.updateChar = (req, res) => {
 	if (role) toUpdate["role"] = role;
 
 	// Updating
-	updateCharInDb(req.params.charId, toUpdate, res);
+	updateCharInDb(cleanParams.charId, toUpdate, res);
 };
 
 exports.updateCombatHigh = (req, res) => {
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
+
 	// Extract data to update
-	const { combatHighlights } = req.body;
+	const { combatHighlights } = cleanBody;
 	const toUpdate = {};
 
 	if (combatHighlights) {
@@ -92,12 +113,15 @@ exports.updateCombatHigh = (req, res) => {
 	}
 
 	// Updating
-	updateCharInDb(req.params.charId, toUpdate, res);
+	updateCharInDb(cleanParams.charId, toUpdate, res);
 };
 
 exports.updateHasBardicInsp = (req, res) => {
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
+
 	// Extract data to update
-	const { hasBardicInsp } = req.body;
+	const { hasBardicInsp } = cleanBody;
 	const toUpdate = {};
 
 	// Checking if boolean is set
@@ -105,12 +129,15 @@ exports.updateHasBardicInsp = (req, res) => {
 		toUpdate["hasBardicInsp"] = hasBardicInsp;
 
 	// Updating
-	updateCharInDb(req.params.charId, toUpdate, res);
+	updateCharInDb(cleanParams.charId, toUpdate, res);
 };
 
 exports.updateHasHeroicInsp = (req, res) => {
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
+
 	// Extract data to update
-	const { hasHeroicInsp } = req.body;
+	const { hasHeroicInsp } = cleanBody;
 	const toUpdate = {};
 
 	// Checking if boolean is set
@@ -118,23 +145,29 @@ exports.updateHasHeroicInsp = (req, res) => {
 		toUpdate["hasHeroicInsp"] = hasHeroicInsp;
 
 	// Updating
-	updateCharInDb(req.params.charId, toUpdate, res);
+	updateCharInDb(cleanParams.charId, toUpdate, res);
 };
 
 exports.updateNotes = (req, res) => {
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
+
 	// Extract data to update
-	const { notes } = req.body;
+	const { notes } = cleanBody;
 	const toUpdate = {};
 
 	if (notes !== undefined) toUpdate["notes"] = notes;
 
 	// Updating
-	updateCharInDb(req.params.charId, toUpdate, res);
+	updateCharInDb(cleanParams.charId, toUpdate, res);
 };
 
 exports.updateMaxHp = (req, res) => {
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
+
 	// Extract data to update
-	const { combatHighlights } = req.body;
+	const { combatHighlights } = cleanBody;
 	const toUpdate = {};
 
 	// Assuming the current Hp will be the max
@@ -143,69 +176,71 @@ exports.updateMaxHp = (req, res) => {
 		toUpdate["combatHighlights.currHitPoint"] = combatHighlights.maxHitPoint;
 	}
 	// Updating
-	updateCharInDb(req.params.charId, toUpdate, res);
+	updateCharInDb(cleanParams.charId, toUpdate, res);
 };
 
 exports.updateCurrHp = (req, res) => {
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
+
 	// Extract data to update
-	const { combatHighlights } = req.body;
+	const { combatHighlights } = cleanBody;
 	const toUpdate = {};
 
 	if (combatHighlights.currHitPoint !== undefined)
 		toUpdate["combatHighlights.currHitPoint"] = combatHighlights.currHitPoint;
 
 	// Updating
-	updateCharInDb(req.params.charId, toUpdate, res);
+	updateCharInDb(cleanParams.charId, toUpdate, res);
 };
 
 exports.modifyHp = async (req, res) => {
-	const { actionType, amount } = req.body;
+	const cleanBody = sanitizeInput(req.body);
+	const cleanParams = sanitizeInput(req.params);
 
-	// Get data
-	const character = await db.Character.findById(req.params.charId);
-	if (!character)
-		return res.status(404).json({ message: "Character not found!" });
+	const { actionType, amount } = cleanBody;
 
-	let currHp = character.combatHighlights.currHitPoint || 0;
-	let tempHp = character.combatHighlights.tempHitPoint || 0;
-	let maxHp = character.combatHighlights.maxHitPoint || 0;
+	try {
+		// Get data
+		const character = await db.Character.findById(cleanParams.charId);
+		if (!character)
+			return res.status(404).json({ message: "Character not found!" });
 
-	// Perform heal or damage
-	if (actionType === "heal") {
-		// Heal can only heal until maxHp
-		currHp = Math.min(currHp + amount, maxHp);
-	} else if (actionType == "damage") {
-		// Should substract first from tempHp if available
-		let remainer = amount;
-		if (tempHp > 0) {
-			if (remainer >= tempHp) {
-				remainer -= tempHp;
-				tempHp = 0;
-			} else {
-				tempHp -= remainer;
-				remainer = 0;
+		let currHp = character.combatHighlights.currHitPoint || 0;
+		let tempHp = character.combatHighlights.tempHitPoint || 0;
+		let maxHp = character.combatHighlights.maxHitPoint || 0;
+
+		if (actionType === "heal") {
+			currHp = Math.min(currHp + amount, maxHp);
+		} else if (actionType == "damage") {
+			let remainer = amount;
+			if (tempHp > 0) {
+				if (remainer >= tempHp) {
+					remainer -= tempHp;
+					tempHp = 0;
+				} else {
+					tempHp -= remainer;
+					remainer = 0;
+				}
 			}
+			if (remainer > 0) currHp = Math.max(currHp - remainer, 0);
 		}
 
-		// Substract remained from Hp (Min val of Hp is 0)
-		if (remainer > 0) currHp = Math.max(currHp - remainer, 0);
-	}
+		character.combatHighlights.currHitPoint = currHp;
+		character.combatHighlights.tempHitPoint = tempHp;
 
-	character.combatHighlights.currHitPoint = currHp;
-	character.combatHighlights.tempHitPoint = tempHp;
-	await character
-		.save()
-		.then((updatedChar) => {
-			res.json(updatedChar);
-		})
-		.catch((err) => {
-			res.send(err);
-		});
+		const updatedChar = await character.save();
+		res.json(updatedChar);
+	} catch (err) {
+		res.status(400).send(err);
+	}
 };
 
 exports.deleteChar = (req, res) => {
+	const cleanParams = sanitizeInput(req.params);
+
 	db.Character.deleteOne({
-		_id: req.params.charId,
+		_id: cleanParams.charId,
 	})
 		.then(() => {
 			res.json({
@@ -213,7 +248,7 @@ exports.deleteChar = (req, res) => {
 			});
 		})
 		.catch((err) => {
-			res.send(err);
+			res.status(400).send(err);
 		});
 };
 
@@ -225,7 +260,7 @@ exports.deleteAllChars = (req, res) => {
 			});
 		})
 		.catch((err) => {
-			res.send(err);
+			res.status(500).send(err);
 		});
 };
 

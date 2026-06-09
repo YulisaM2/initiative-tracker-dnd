@@ -3,6 +3,11 @@ import axios from "axios";
 import { toast } from "sonner";
 
 import { CardContext } from "../../../context/CardContext";
+import {
+	MAX_LENGTH_HP,
+	DELAY_SPINNER_TRIGGER,
+} from "../../../assets/constants";
+import { cleanNumber, formatToNumber } from "../helpers/Stat.utils";
 
 export const MaxHpForm = ({
 	id,
@@ -13,24 +18,19 @@ export const MaxHpForm = ({
 }) => {
 	const { updateCharacterInContext } = useContext(CardContext);
 
-	const formatInitialValue = (val) =>
-		val === 0 || val === undefined || val === null ? "" : String(val);
-
-	const [value, setValue] = useState(formatInitialValue(defaultValue));
+	const [value, setValue] = useState(formatToNumber(defaultValue));
 	const [enableMaxHp, setMaxHp] = useState(false);
-	const maxLength = 3;
-	const delay = 300;
 
 	useEffect(() => {
-		setValue(formatInitialValue(defaultValue));
+		setValue(formatToNumber(defaultValue));
 	}, [defaultValue]);
 
 	const handleInputChange = (e) => {
-		let cleanValue = e.target.value.replace(/\D/g, "");
-		if (cleanValue) cleanValue = String(parseInt(cleanValue, 10));
-		if (cleanValue.length > maxLength)
-			cleanValue = cleanValue.slice(0, maxLength);
-		setValue(cleanValue);
+		const cleanedNum = cleanNumber(e.target.value, value, MAX_LENGTH_HP);
+
+		if (cleanedNum === null) return;
+
+		setValue(cleanedNum);
 	};
 
 	const handleMaxHpSubmit = async (e) => {
@@ -47,7 +47,7 @@ export const MaxHpForm = ({
 					`${import.meta.env.VITE_API_CHAR_URL}/${id}/${import.meta.env.VITE_API_MAX_HP_URL}`,
 					payload,
 				),
-				new Promise((resolve) => setTimeout(resolve, delay)),
+				new Promise((resolve) => setTimeout(resolve, DELAY_SPINNER_TRIGGER)),
 			]);
 
 			if (response.data) {
