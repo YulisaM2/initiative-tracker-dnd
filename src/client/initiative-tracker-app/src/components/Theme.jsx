@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { CardContext } from "../context/CardContext";
 import Player from "../icons/Theme/Player";
@@ -8,7 +9,6 @@ import Hidden from "../icons/Theme/Hidden";
 // For now, color is indicative of type of role a character
 export const Theme = ({ theme }) => {
 	// Tracking general states for query
-	const [err, setError] = useState(null);
 	const { selectedCharacter, characters, setCharacters } =
 		useContext(CardContext);
 
@@ -47,13 +47,13 @@ export const Theme = ({ theme }) => {
 						payload,
 					);
 				} catch (error) {
-					setError(error.message);
+					toast.error(error.message);
 				}
 			};
 
 			updateCardTheme();
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		}
 	};
 

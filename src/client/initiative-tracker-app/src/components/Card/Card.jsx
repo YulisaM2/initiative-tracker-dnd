@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
@@ -18,7 +19,6 @@ const Card = ({ character }) => {
 		setLoading(isLoading);
 	};
 
-	const [err, setError] = useState(null);
 	const keyUpTimer = useRef(null);
 
 	const { enableScreenDrag, setSelectedCharacter, updateCharacterInContext } =
@@ -132,7 +132,7 @@ const Card = ({ character }) => {
 				payload,
 			);
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		} finally {
 			setLoading(false);
 		}
@@ -154,7 +154,7 @@ const Card = ({ character }) => {
 			);
 			if (response.data) updateCharacterInContext(character._id, response.data);
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		} finally {
 			setLoading(false);
 		}

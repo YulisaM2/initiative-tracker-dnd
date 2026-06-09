@@ -154,8 +154,6 @@ exports.updateCurrHp = (req, res) => {
 	if (combatHighlights.currHitPoint !== undefined)
 		toUpdate["combatHighlights.currHitPoint"] = combatHighlights.currHitPoint;
 
-	console.log(toUpdate);
-
 	// Updating
 	updateCharInDb(req.params.charId, toUpdate, res);
 };

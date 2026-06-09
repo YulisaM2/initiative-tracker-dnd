@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { MaxHpForm } from "./MaxHpForm";
 import { HpDisplay } from "./HpDisplay";
@@ -45,7 +46,7 @@ export const MaxHp = ({
 				updatedData = response.data;
 			}
 		} catch (error) {
-			console.error("Failed to update health:", error.message);
+			toast.error(error.message);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 			if (updatedData) {

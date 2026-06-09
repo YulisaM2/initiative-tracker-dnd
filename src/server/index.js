@@ -65,12 +65,12 @@ const charRoutes = require("./routes/character");
 app.use("/api/character", charRoutes);
 
 // Catching any other route
-app.use("/api/*", (req, res) => {
+app.use("/api/*splat", (req, res) => {
 	res
 		.status(404)
 		.json({ error: "The page you are trying to reach doesn't exist" });
 });
 
-app.get("*", (req, res) => {
+app.get("/*splat", (req, res) => {
 	res.redirect("/");
 });

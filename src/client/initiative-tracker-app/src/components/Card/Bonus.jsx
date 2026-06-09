@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
 import BassClef from "../../icons/Bonus/BassClef";
@@ -14,7 +15,6 @@ export const Bonus = ({
 	onLoadingChange,
 }) => {
 	// Tracking general states for query
-	const [err, setError] = useState(null);
 	const { updateCharacterInContext } = useContext(CardContext);
 	const delay = 300;
 
@@ -49,7 +49,7 @@ export const Bonus = ({
 
 			if (response.data) updateCharacterInContext(id, response.data);
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 		}

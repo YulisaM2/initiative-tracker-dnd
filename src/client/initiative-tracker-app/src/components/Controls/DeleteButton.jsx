@@ -1,5 +1,6 @@
 import { useRef, useContext } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
 import Trash from "../../icons/Trash";
@@ -56,7 +57,7 @@ export const DeleteButton = ({ id }) => {
 				prevChars.filter((character) => character._id !== id),
 			);
 		} catch (error) {
-			console.error("Error deleting character:", error);
+			toast.error(error.message);
 		}
 	};
 

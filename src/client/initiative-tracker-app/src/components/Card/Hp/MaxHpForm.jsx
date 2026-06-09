@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { CardContext } from "../../../context/CardContext";
 
@@ -11,7 +12,6 @@ export const MaxHpForm = ({
 	onSaveSuccess,
 }) => {
 	const { updateCharacterInContext } = useContext(CardContext);
-	const [err, setError] = useState(null);
 
 	const formatInitialValue = (val) =>
 		val === 0 || val === undefined || val === null ? "" : String(val);
@@ -38,7 +38,6 @@ export const MaxHpForm = ({
 		const cleanNumericValue = value === "" ? 0 : Number(value);
 
 		if (onLoadingChange) onLoadingChange(true);
-		setError(null);
 
 		try {
 			const payload = { combatHighlights: { maxHitPoint: cleanNumericValue } };
@@ -57,7 +56,7 @@ export const MaxHpForm = ({
 				if (onSaveSuccess) onSaveSuccess();
 			}
 		} catch (error) {
-			setError(error.message);
+			toast.error(error.message);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 		}

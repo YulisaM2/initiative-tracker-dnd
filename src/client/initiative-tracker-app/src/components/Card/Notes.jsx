@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
+import { toast } from "sonner";
 
 import { autoGrow } from "../Card/Card.utils";
 import { CardContext } from "../../context/CardContext";
@@ -15,7 +16,6 @@ const Notes = ({
 	onInput,
 }) => {
 	// Tracking general states for query
-	const [err, setError] = useState(null);
 	const { updateCharacterInContext } = useContext(CardContext);
 	const saveTimer = useRef(null);
 	const delay = 1000;
@@ -38,12 +38,14 @@ const Notes = ({
 		if (onLoadingChange) onLoadingChange(true);
 		if (saveTimer.current) clearTimeout(saveTimer.current);
 
+		const currNote = e.target.value;
+
 		// Delay before firing stat update
 		saveTimer.current = setTimeout(async () => {
 			try {
 				// Format payload
 				const payload = {
-					notes: value,
+					notes: currNote,
 				};
 
 				// Ping db
@@ -54,7 +56,7 @@ const Notes = ({
 
 				if (response.data) updateCharacterInContext(id, response.data);
 			} catch (error) {
-				setError(error.message);
+				toast.error(error.message);
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}
@@ -70,7 +72,7 @@ const Notes = ({
 				defaultValue={defaultValue}
 				onKeyUp={updateNotes}
 				onKeyDown={(e) => e.stopPropagation()}
-				onInput={() => {
+				onInput={(e) => {
 					autoGrow(textAreaNotesRef, limitNotes);
 				}}
 				onChange={(e) => {
