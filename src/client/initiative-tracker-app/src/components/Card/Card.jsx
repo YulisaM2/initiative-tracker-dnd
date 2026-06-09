@@ -5,7 +5,7 @@ import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
 import { Bonus } from "./Bonus";
-import { MaxHp } from "./MaxHp";
+import { MaxHp } from "./Hp/MaxHp";
 import Notes from "./Notes";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
@@ -33,6 +33,8 @@ const Card = ({ character }) => {
 	const hasHeroicInsp = character?.hasHeroicInsp || "";
 	const characterNotes = character?.notes || "";
 	const characterMaxHp = character?.combatHighlights?.maxHitPoint || "";
+	const characterCurrHp = character?.combatHighlights?.currHitPoint || "";
+	const characterTempHp = character?.combatHighlights?.tempHitPoint || "";
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -213,13 +215,16 @@ const Card = ({ character }) => {
 					onKeyUp={handleKeyUp}
 					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
-				<div className='hp-container'></div>
-				<MaxHp
-					className='react-transform-component-no-drag'
-					name='maxHitPoint'
-					defaultValue={characterMaxHp}
-					id={character._id}
-				></MaxHp>
+				<div className='stats-container'>
+					<MaxHp
+						className='react-transform-component-no-drag'
+						name='maxHitPoint'
+						defaultValue={characterMaxHp}
+						currentValue={characterCurrHp}
+						tempValue={characterTempHp}
+						id={character._id}
+					></MaxHp>
+				</div>
 				<div className='stats-container'>
 					<Stat
 						className='armor-class-input react-transform-component-no-drag'

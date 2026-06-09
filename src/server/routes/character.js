@@ -23,6 +23,8 @@ router
 	.patch(controller.updateHasHeroicInsp);
 router.route("/:charId/notes").patch(controller.updateNotes);
 router.route("/:charId/maxHp").patch(controller.updateMaxHp);
+router.route("/:charId/currHp").patch(controller.updateCurrHp);
+router.route("/:charId/modifyHp").patch(controller.modifyHp);
 
 router
 	.route("/:charId")
