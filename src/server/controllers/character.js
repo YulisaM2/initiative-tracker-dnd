@@ -120,8 +120,21 @@ exports.updateNotes = (req, res) => {
 	const { notes } = req.body;
 	const toUpdate = {};
 
-	// Checking if boolean is set
-	if (notes) toUpdate["notes"] = notes;
+	if (notes !== undefined) toUpdate["notes"] = notes;
+
+	// Updating
+	updateCharInDb(req.params.charId, toUpdate, res);
+};
+
+exports.updateMaxHp = (req, res) => {
+	// Extract data to update
+	const { combatHighlights } = req.body;
+	const toUpdate = {};
+
+	if (combatHighlights.maxHitPoint !== undefined)
+		toUpdate["combatHighlights.maxHitPoint"] = combatHighlights.maxHitPoint;
+
+	console.log(toUpdate);
 
 	// Updating
 	updateCharInDb(req.params.charId, toUpdate, res);

@@ -5,6 +5,7 @@ import { autoGrow, bringToFront } from "../Card/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
 import { Bonus } from "./Bonus";
+import { MaxHp } from "./MaxHp";
 import Notes from "./Notes";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
@@ -31,6 +32,7 @@ const Card = ({ character }) => {
 	const hasBardicInsp = character?.hasBardicInsp || "";
 	const hasHeroicInsp = character?.hasHeroicInsp || "";
 	const characterNotes = character?.notes || "";
+	const characterMaxHp = character?.combatHighlights?.maxHitPoint || "";
 
 	// Setup for drag and drop
 	const [position, setPosition] = useState(character.position);
@@ -211,6 +213,13 @@ const Card = ({ character }) => {
 					onKeyUp={handleKeyUp}
 					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
+				<div className='hp-container'></div>
+				<MaxHp
+					className='react-transform-component-no-drag'
+					name='maxHitPoint'
+					defaultValue={characterMaxHp}
+					id={character._id}
+				></MaxHp>
 				<div className='stats-container'>
 					<Stat
 						className='armor-class-input react-transform-component-no-drag'
@@ -229,23 +238,26 @@ const Card = ({ character }) => {
 						onLoadingChange={handleFieldLoading}
 					></Stat>
 				</div>
-				<div className='stats-container'>
-					<Bonus
-						className='bardic-insp-bttn react-transform-component-no-drag'
-						bonusName='hasBardicInsp'
-						defaultValue={hasBardicInsp}
-						url={import.meta.env.VITE_API_BARDIC_INSPIRATION_URL}
-						id={character._id}
-						onLoadingChange={handleFieldLoading}
-					></Bonus>
-					<Bonus
-						className='heroic-insp-bttn react-transform-component-no-drag'
-						bonusName='hasHeroicInsp'
-						defaultValue={hasHeroicInsp}
-						url={import.meta.env.VITE_API_HEROIC_INSPIRATION_URL}
-						id={character._id}
-						onLoadingChange={handleFieldLoading}
-					></Bonus>
+				<div className='stats-container vertical-stack'>
+					<div className='stat-label'>Bonus</div>
+					<div className='bonus-row'>
+						<Bonus
+							className='bardic-insp-bttn react-transform-component-no-drag'
+							bonusName='hasBardicInsp'
+							defaultValue={hasBardicInsp}
+							url={import.meta.env.VITE_API_BARDIC_INSPIRATION_URL}
+							id={character._id}
+							onLoadingChange={handleFieldLoading}
+						></Bonus>
+						<Bonus
+							className='heroic-insp-bttn react-transform-component-no-drag'
+							bonusName='hasHeroicInsp'
+							defaultValue={hasHeroicInsp}
+							url={import.meta.env.VITE_API_HEROIC_INSPIRATION_URL}
+							id={character._id}
+							onLoadingChange={handleFieldLoading}
+						></Bonus>
+					</div>
 				</div>
 				<div className='notes-container'>
 					<Notes

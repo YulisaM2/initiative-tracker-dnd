@@ -11,7 +11,7 @@ const BassClef = ({ size = "24" }) => {
 				<filter id='gold-glow' x='-200%' y='-200%' width='500%' height='500%'>
 					<feGaussianBlur stdDeviation='2.0' result='blur' />
 					{/* This floods the blur layer with your CSS variable color */}
-					<feFlood flood-color='var(--bardic-glow-color)' result='glow-color' />
+					<feFlood floodColor='var(--bardic-glow-color)' result='glow-color' />
 					<feComposite
 						in='glow-color'
 						in2='blur'
@@ -26,10 +26,7 @@ const BassClef = ({ size = "24" }) => {
 				</filter>
 			</defs>
 
-			<g
-				transform='translate(-0.5, -1.0) scale(1.12)'
-				transform-origin='center'
-			>
+			<g transform='translate(-0.5, -1.0) scale(1.12)' transformOrigin='center'>
 				<path
 					className='clef-glow-target'
 					d='M4.5 13.5a2.4 2.4 0 1 1 0-4.8 2.4 2.4 0 0 1 0 4.8Z'

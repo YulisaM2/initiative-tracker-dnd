@@ -10,7 +10,7 @@ const Hero = ({ size = "24" }) => {
 			<defs>
 				<filter id='red-glow' x='-200%' y='-200%' width='500%' height='500%'>
 					<feGaussianBlur stdDeviation='2.0' result='blur' />
-					<feFlood flood-color='var(--heroic-glow-color)' result='glow-color' />
+					<feFlood floodColor='var(--heroic-glow-color)' result='glow-color' />
 					<feComposite
 						in='glow-color'
 						in2='blur'
