@@ -53,7 +53,9 @@ export const Theme = ({ theme }) => {
 
 			updateCardTheme();
 		} catch (error) {
-			toast.error(error.message);
+			if (error.message?.includes("null"))
+				toast.error("Don't forget to select the character!");
+			else toast.error(error.message);
 		}
 	};
 
