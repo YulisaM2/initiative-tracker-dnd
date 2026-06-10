@@ -780,3 +780,8 @@ input.stat {
 .heal-btn:hover {
 	background-color: #143216;
 }
+
+.delete-all-btn {
+	margin-top: 10px;
+	margin-right: 10px;
+}

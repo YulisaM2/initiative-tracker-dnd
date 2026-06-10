@@ -25,7 +25,7 @@ export const DeleteAllButton = ({ id }) => {
 	};
 
 	return (
-		<div className='btn-circle' onClick={handleDeleteAll}>
+		<div className='btn-circle delete-all-btn' onClick={handleDeleteAll}>
 			<Trash />
 		</div>
 	);
