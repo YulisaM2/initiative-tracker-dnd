@@ -78,6 +78,8 @@ export const handleContractValidation = (
 
 	toast.error(clientErrorMessage);
 
-	if (onLoadingChange) onLoadingChange(false);
+	// Making onLoading optional
+	if (typeof onLoadingChange === "function") onLoadingChange(false);
+
 	return true;
 };

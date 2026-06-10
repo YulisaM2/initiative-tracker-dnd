@@ -63,11 +63,11 @@ export const HpDisplay = ({
 
 			<div className='hp-mod-controls'>
 				<button
-					className='damage-bttn'
+					className='damage-btn'
 					type='button'
 					onClick={() => runHpAction("damage")}
 				>
-					-
+					Damage
 				</button>
 				<input
 					type='text'
@@ -78,11 +78,11 @@ export const HpDisplay = ({
 					onChange={handleModifierChange}
 				/>
 				<button
-					className='heal-bttn'
+					className='heal-btn'
 					type='button'
 					onClick={() => runHpAction("heal")}
 				>
-					+
+					Heal
 				</button>
 			</div>
 		</div>

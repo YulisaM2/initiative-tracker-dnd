@@ -25,7 +25,7 @@ export const Bonus = ({
 	const SelectedIcon = BONUS_ICONS[bonusName];
 
 	// To apply style of inactive vs active
-	const combinedButtonClass = `bonus-bttn ${className || ""} ${defaultValue ? "active" : "inactive"}`;
+	const combinedButtonClass = `bonus-btn ${className || ""} ${defaultValue ? "active" : "inactive"}`;
 	const updateBonus = async (e) => {
 		if (e) e.preventDefault();
 

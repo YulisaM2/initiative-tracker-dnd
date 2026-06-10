@@ -4,6 +4,7 @@ import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import Card from "../components/Card/Card.jsx";
 import { CardContext } from "../context/CardContext.jsx";
 import Controls from "../components/Controls/Controls.jsx";
+import { DeleteAllButton } from "../components/Controls/DeleteAllButton.jsx";
 
 const CardsPage = () => {
 	const { characters, setSelectedCharacter } = useContext(CardContext);
@@ -40,7 +41,6 @@ const CardsPage = () => {
 					],
 				}}
 			>
-				{/* Setting viewport of the entire screen for rendering. */}
 				<TransformComponent
 					wrapperStyle={{ width: "100vw", height: "100vh" }}
 					contentStyle={{ display: "flex", alignItems: "center" }}
@@ -56,6 +56,7 @@ const CardsPage = () => {
 				</TransformComponent>
 			</TransformWrapper>
 			<Controls />
+			<DeleteAllButton />
 		</div>
 	);
 };
