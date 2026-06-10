@@ -6,6 +6,7 @@ import { MaxHpForm } from "./MaxHpForm";
 import { HpDisplay } from "./HpDisplay";
 import { CardContext } from "../../../context/CardContext";
 import { DELAY_SPINNER_TRIGGER } from "../../../assets/constants";
+import { extractApiErrorMessage } from "../helpers/Card.utils";
 
 export const MaxHp = ({
 	id,
@@ -45,7 +46,8 @@ export const MaxHp = ({
 				updatedData = response.data;
 			}
 		} catch (error) {
-			toast.error(error);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error(cleanMsg);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 			if (updatedData) {

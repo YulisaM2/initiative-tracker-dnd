@@ -4,6 +4,12 @@ import { toast } from "sonner";
 
 import { CardContext } from "../context/CardContext";
 import { CONTROLS_ICONS } from "../assets/constants.js";
+import {
+	extractApiErrorMessage,
+	handleContractValidation,
+} from "./Card/helpers/Card.utils.js";
+
+import { CharacterContract } from "../../../../contracts/index.js";
 
 // For now, color is indicative of type of role a character
 export const Theme = ({ theme }) => {
@@ -14,14 +20,38 @@ export const Theme = ({ theme }) => {
 	const SelectedIcon = CONTROLS_ICONS[theme.icon];
 
 	const changeTheme = () => {
+		if (!selectedCharacter?._id) {
+			toast.error("Please select a character first!");
+			return;
+		}
 		try {
+			// To check that the contract is fulfilled
+			const testPayload = {
+				role: theme.id,
+			};
+
+			// Validating
+			const contractValidation = CharacterContract.safeParse(testPayload);
+
+			// If invalid, stop
+			if (
+				handleContractValidation(
+					contractValidation,
+					"role",
+					onLoadingChange,
+					toast,
+				)
+			) {
+				return;
+			}
+
 			const currCardIndex = characters.findIndex(
 				(character) => character._id === selectedCharacter._id,
 			);
 
 			const updateCard = {
 				...characters[currCardIndex],
-				role: theme.id,
+				role: contractValidation.data.role,
 			};
 
 			const newCards = [...characters];
@@ -30,9 +60,9 @@ export const Theme = ({ theme }) => {
 
 			const updateCardTheme = async () => {
 				try {
-					// Format payload
+					// If valid, format payload with data
 					const payload = {
-						role: theme.id,
+						role: contractValidation.data.role,
 					};
 
 					// Ping db
@@ -41,7 +71,8 @@ export const Theme = ({ theme }) => {
 						payload,
 					);
 				} catch (error) {
-					toast.error(error.message);
+					const cleanMsg = extractApiErrorMessage(error);
+					toast.error(cleanMsg);
 				}
 			};
 

@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 import Plus from "../../icons/Controls/Plus";
 import { CardContext } from "../../context/CardContext";
+import { extractApiErrorMessage } from "../Card/helpers/Card.utils";
 
 export const AddButton = () => {
 	// Tracking general states
@@ -30,7 +31,8 @@ export const AddButton = () => {
 			);
 			setCharacters((prevState) => [response.data, ...prevState]);
 		} catch (error) {
-			toast.error(error.message);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error(cleanMsg);
 		} finally {
 			setLoading(false);
 		}

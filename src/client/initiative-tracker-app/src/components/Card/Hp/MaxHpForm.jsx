@@ -8,6 +8,11 @@ import {
 	DELAY_SPINNER_TRIGGER,
 } from "../../../assets/constants";
 import { cleanNumber, formatToNumber } from "../helpers/Stat.utils";
+import {
+	extractApiErrorMessage,
+	handleContractValidation,
+} from "../helpers/Card.utils";
+import { CombatHighlightsContract } from "../../../../../../contracts/index";
 
 export const MaxHpForm = ({
 	id,
@@ -40,7 +45,34 @@ export const MaxHpForm = ({
 		if (onLoadingChange) onLoadingChange(true);
 
 		try {
-			const payload = { combatHighlights: { maxHitPoint: cleanNumericValue } };
+			// To check that the contract is fulfilled
+			const testPayload = {
+				maxHitPoint: cleanNumericValue,
+			};
+
+			// Validating
+			const contractValidation =
+				CombatHighlightsContract.safeParse(testPayload);
+
+			// If invaid, stop
+			if (
+				handleContractValidation(
+					contractValidation,
+					"maxHitPoint",
+					onLoadingChange,
+					toast,
+				)
+			) {
+				setValue(formatToNumber(defaultValue));
+				return;
+			}
+
+			// If valid, format payload with data
+			const payload = {
+				combatHighlights: {
+					maxHitPoint: contractValidation.data.maxHitPoint,
+				},
+			};
 
 			const [response] = await Promise.all([
 				axios.patch(
@@ -56,7 +88,8 @@ export const MaxHpForm = ({
 				if (onSaveSuccess) onSaveSuccess();
 			}
 		} catch (error) {
-			toast.error(error.message);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error(cleanMsg);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 		}

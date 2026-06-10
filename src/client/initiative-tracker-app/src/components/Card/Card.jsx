@@ -2,7 +2,11 @@ import { useRef, useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-import { autoGrow, bringToFront } from "../Card/helpers/Card.utils";
+import {
+	autoGrow,
+	bringToFront,
+	extractApiErrorMessage,
+} from "../Card/helpers/Card.utils";
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
 import { Bonus } from "./Bonus";
@@ -133,7 +137,8 @@ const Card = ({ character }) => {
 				payload,
 			);
 		} catch (error) {
-			toast.error(error.message);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error(cleanMsg);
 		} finally {
 			setLoading(false);
 		}
@@ -155,7 +160,8 @@ const Card = ({ character }) => {
 			);
 			if (response.data) updateCharacterInContext(character._id, response.data);
 		} catch (error) {
-			toast.error(error.message);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error();
 		} finally {
 			setLoading(false);
 		}
