@@ -548,77 +548,42 @@ textarea::-webkit-scrollbar-thumb:hover {
 	text-align: center;
 }
 
+/* Forcing combat row to behave like hp mode ones
+ Basically pretending there are 3 items, 
+ so that each column aligns itself with the HP 
+ stat corresponding to that line */
 .stats-container.combat-row {
-	display: flex !important;
-	flex-direction: row !important;
-	align-items: flex-end !important;
-	justify-content: space-between !important;
-
+	display: grid !important;
+	grid-template-columns: repeat(3, 1fr) !important;
+	gap: 8px !important;
 	width: 100% !important;
 	box-sizing: border-box !important;
-	margin-top: 10px !important;
-	margin-bottom: 10px !important;
-
-	padding-left: 0 !important;
-	padding-right: 0 !important;
 }
 
 .stats-container.combat-row > * {
+	min-width: 0 !important;
+	text-align: center;
 	display: flex !important;
 	flex-direction: column !important;
-	flex: none !important;
-	width: 50px !important;
-	min-width: 50px !important;
-	max-width: 50px !important;
-
 	align-items: center !important;
-	justify-content: flex-end !important;
 }
 
-.stats-container.combat-row .stat-label {
-	width: 50px !important;
-	max-width: 50px !important;
-	text-align: center !important;
-	display: block !important;
-	margin: 0 !important;
-	padding: 0 !important;
+.stats-container.combat-row > :nth-child(1) {
+	grid-column: 1 !important;
+}
+
+.stats-container.combat-row > :nth-child(2) {
+	grid-column: 3 !important;
 }
 
 .stats-container.combat-row input.stat {
+	box-sizing: border-box !important;
 	line-height: 30px !important;
 	padding-top: 0 !important;
 	padding-bottom: 0 !important;
 	display: inline-flex !important;
 	align-items: center !important;
-	width: 60px;
-	min-width: 60px;
-}
-
-.stats-container.combat-row > .stat-container,
-.stats-container.combat-row > div {
-	display: flex !important;
-	flex-direction: column !important;
-	align-items: center !important;
-	justify-content: flex-end !important;
-	width: 50px !important;
-}
-
-.stats-container.combat-row .stat-label {
-	width: 50px !important;
-	max-width: 50px !important;
-	text-align: center !important;
-	display: block !important;
-	margin-left: 0 !important;
-	margin-right: 0 !important;
-	padding: 0 !important;
-}
-
-.stats-container.combat-row input.stat {
-	width: 50px !important;
-	max-width: 50px !important;
-	text-align: center !important;
-	margin-left: 0 !important;
-	margin-right: 0 !important;
+	text-align: center;
 }
 
 .max-hp-display-mode {
