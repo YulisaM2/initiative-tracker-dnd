@@ -17,3 +17,67 @@ export const autoGrow = (textAreaRef, limit) => {
 	// Set the new height
 	current.style.height = current.scrollHeight + "px";
 };
+
+// Depending of if error is thrown by Zod (contract layer) or Mongo/Mongoose (db layer)
+// Need to extract data from the error to display on banner
+export const extractApiErrorMessage = (error) => {
+	// Providing message error for validators
+
+	let toastMsg = "Validation failed";
+	const responseData = error.response?.data;
+
+	if (responseData && responseData.errors) {
+		const allErrorsArray = Object.values(responseData.errors);
+
+		// Looking for the first validation error from possible
+		// (Better to fix in order than spam banners with errors)
+		if (allErrorsArray.length > 0) {
+			const firstError = allErrorsArray[0];
+
+			// 1. Handle flat contract errors
+			if (typeof firstError === "string") {
+				toastMsg = firstError;
+			}
+			// 2. Handle nested contract errors
+			else if (Array.isArray(firstError) && firstError.length > 0) {
+				toastMsg = firstError[0];
+			}
+			// 3. Handle db errors
+			else if (firstError && firstError.message) {
+				toastMsg = firstError.message;
+			}
+		}
+	}
+	// Fallback for standard error message parameters or raw server strings
+	else if (responseData && responseData.message) {
+		toastMsg = responseData.message;
+	}
+	// Last resort network connection status string
+	else if (error.message) {
+		toastMsg = error.message;
+	}
+
+	return toastMsg;
+};
+
+export const handleContractValidation = (
+	contractValidation,
+	fieldName,
+	onLoadingChange,
+	toast,
+) => {
+	// If validation passed, done
+	if (contractValidation.success) return false;
+
+	// Parse the errors into a readable format from Zod (contracts)
+	const fieldErrors = contractValidation.error.flatten().fieldErrors;
+
+	// Extract errors from backend (Mongo, Mongoose, etc)
+	const clientErrorMessage =
+		fieldErrors[fieldName]?.[0] || "Invalid input value";
+
+	toast.error(clientErrorMessage);
+
+	if (onLoadingChange) onLoadingChange(false);
+	return true;
+};

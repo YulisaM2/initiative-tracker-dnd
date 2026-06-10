@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-
 const { combatHighlightsSchema } = require("./combat-highlights.js");
 
-// Following Monster Manual Stat Block Overview as guide
+// Following Monster Manual Stat Block Overview as a guide
 const characterSchema = new mongoose.Schema({
 	combatHighlights: {
 		type: combatHighlightsSchema,
@@ -36,6 +35,7 @@ const characterSchema = new mongoose.Schema({
 		type: String,
 		enum: {
 			values: ["Player", "NPC"],
+			message: "{VALUE} is not a valid character role",
 		},
 		default: "NPC",
 	},
@@ -44,8 +44,7 @@ const characterSchema = new mongoose.Schema({
 	},
 });
 
-if (mongoose.models && mongoose.models.Character) {
-	delete mongoose.models.Character;
-}
-const Character = mongoose.model("character", characterSchema);
+const Character =
+	mongoose.models.character || mongoose.model("character", characterSchema);
+
 module.exports = { Character };

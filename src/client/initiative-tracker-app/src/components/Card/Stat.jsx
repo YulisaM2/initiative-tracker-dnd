@@ -3,8 +3,18 @@ import axios from "axios";
 import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
-import { MAX_LENGTH_STAT, DELAY_INPUT_FIRE } from "../../assets/constants";
+import {
+	MAX_LENGTH_STAT,
+	MAX_LENGTH_HP,
+	DELAY_INPUT_FIRE,
+} from "../../assets/constants";
 import { cleanNumber, formatToNumber } from "./helpers/Stat.utils";
+import {
+	extractApiErrorMessage,
+	handleContractValidation,
+} from "./helpers/Card.utils";
+
+import { CombatHighlightsContract } from "../../../../../contracts/index.js";
 
 export const Stat = ({
 	id,
@@ -13,6 +23,7 @@ export const Stat = ({
 	className,
 	defaultValue,
 	onLoadingChange,
+	maxHpValue,
 }) => {
 	// Tracking general states for query
 	const { updateCharacterInContext } = useContext(CardContext);
@@ -37,7 +48,10 @@ export const Stat = ({
 	}, []);
 
 	const updateStat = async (e) => {
-		const cleanedNum = cleanNumber(e.target.value, value, MAX_LENGTH_STAT);
+		const currHpName = "currHitPoint";
+		const maxLength = statName == currHpName ? MAX_LENGTH_HP : MAX_LENGTH_STAT;
+
+		const cleanedNum = cleanNumber(e.target.value, value, maxLength);
 
 		if (cleanedNum === null) return;
 
@@ -49,10 +63,38 @@ export const Stat = ({
 		// Delay before firing stat update
 		saveTimer.current = setTimeout(async () => {
 			try {
-				// Format payload
+				// To check that the contract is fulfilled
+				// Handling validation check of currHP <= maxHP when value is updated
+				// Need to pass the maxvalue that was obtained from db
+				const testPayload = {
+					[statName]: cleanedNum,
+					...(statName === currHpName && {
+						maxHitPoint: Number(maxHpValue),
+					}),
+				};
+
+				// Validating
+				const contractValidation =
+					CombatHighlightsContract.safeParse(testPayload);
+
+				// If invaid, stop
+				if (
+					handleContractValidation(
+						contractValidation,
+						statName,
+						onLoadingChange,
+						toast,
+					)
+				) {
+					// Optional: Resets the input text value back to the last valid DB entry upon violation
+					setValue(formatToNumber(defaultValue));
+					return;
+				}
+
+				// If valid, format payload with data
 				const payload = {
 					combatHighlights: {
-						[statName]: cleanedNum,
+						[statName]: contractValidation.data[statName],
 					},
 				};
 
@@ -64,24 +106,8 @@ export const Stat = ({
 
 				if (response.data) updateCharacterInContext(id, response.data);
 			} catch (error) {
-				// Providing message error for validators
-				let toastMsg = "Validation failed";
-				const responseData = error.response?.data;
-				if (responseData && responseData.errors) {
-					// Looking for the first validation error from possible
-					// (Better to fix in order than spam banners with errors)
-					const allErrorsArray = Object.values(responseData.errors);
-					if (allErrorsArray.length > 0 && allErrorsArray[0].message) {
-						toastMsg = allErrorsArray[0].message;
-					}
-					// Defaulting to other/generic message if nothing specified found
-				} else if (responseData && responseData.message) {
-					toastMsg = responseData.message;
-				} else if (error.message) {
-					toastMsg = error.message;
-				}
-
-				toast.error(toastMsg);
+				const cleanMsg = extractApiErrorMessage(error);
+				toast.error(cleanMsg);
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}

@@ -2,9 +2,14 @@ import { useState, useContext, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 
-import { autoGrow } from "../Card/helpers/Card.utils";
+import {
+	autoGrow,
+	extractApiErrorMessage,
+	handleContractValidation,
+} from "../Card/helpers/Card.utils";
 import { CardContext } from "../../context/CardContext";
 import { DELAY_INPUT_FIRE } from "../../assets/constants";
+import { CharacterContract } from "../../../../../contracts/index";
 
 import Divider from "../../icons/Divider";
 
@@ -43,9 +48,29 @@ const Notes = ({
 		// Delay before firing stat update
 		saveTimer.current = setTimeout(async () => {
 			try {
-				// Format payload
-				const payload = {
+				// To check that the contract is fulfilled
+				const testPayload = {
 					notes: currNote,
+				};
+
+				// Validating
+				const contractValidation = CharacterContract.safeParse(testPayload);
+
+				// If invalid, stop
+				if (
+					handleContractValidation(
+						contractValidation,
+						"notes",
+						onLoadingChange,
+						toast,
+					)
+				) {
+					return;
+				}
+
+				// If valid, format payload with data
+				const payload = {
+					notes: contractValidation.data.notes,
 				};
 
 				// Ping db
@@ -56,7 +81,8 @@ const Notes = ({
 
 				if (response.data) updateCharacterInContext(id, response.data);
 			} catch (error) {
-				toast.error(error.message);
+				const cleanMsg = extractApiErrorMessage(error);
+				toast.error(cleanMsg);
 			} finally {
 				if (onLoadingChange) onLoadingChange(false);
 			}

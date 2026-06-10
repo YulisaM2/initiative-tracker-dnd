@@ -4,6 +4,12 @@ import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
 import { DELAY_SPINNER_TRIGGER, BONUS_ICONS } from "../../assets/constants.js";
+import {
+	extractApiErrorMessage,
+	handleContractValidation,
+} from "./helpers/Card.utils";
+
+import { CharacterContract } from "../../../../../contracts/index.js";
 
 export const Bonus = ({
 	id,
@@ -26,9 +32,29 @@ export const Bonus = ({
 		if (onLoadingChange) onLoadingChange(true);
 
 		try {
-			// Format payload
-			const payload = {
+			// To check that the contract is fulfilled
+			const testPayload = {
 				[bonusName]: !defaultValue,
+			};
+
+			// Validating
+			const contractValidation = CharacterContract.safeParse(testPayload);
+
+			// If invaid, stop
+			if (
+				handleContractValidation(
+					contractValidation,
+					bonusName,
+					onLoadingChange,
+					toast,
+				)
+			) {
+				return;
+			}
+
+			// If valid, format payload with data
+			const payload = {
+				[bonusName]: contractValidation.data[bonusName],
 			};
 
 			// Ping db
@@ -42,7 +68,8 @@ export const Bonus = ({
 
 			if (response.data) updateCharacterInContext(id, response.data);
 		} catch (error) {
-			toast.error(error.message);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error(cleanMsg);
 		} finally {
 			if (onLoadingChange) onLoadingChange(false);
 		}

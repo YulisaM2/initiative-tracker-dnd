@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 import { CardContext } from "../../context/CardContext";
 import Trash from "../../icons/Trash";
+import { extractApiErrorMessage } from "../Card/helpers/Card.utils";
 
 export const DeleteButton = ({ id }) => {
 	const { setCharacters } = useContext(CardContext);
@@ -57,7 +58,8 @@ export const DeleteButton = ({ id }) => {
 				prevChars.filter((character) => character._id !== id),
 			);
 		} catch (error) {
-			toast.error(error.message);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error(cleanMsg);
 		}
 	};
 

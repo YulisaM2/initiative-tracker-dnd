@@ -45,6 +45,7 @@ export const HpDisplay = ({
 					className={className}
 					defaultValue={currHpValue}
 					statName='currHitPoint'
+					maxHpValue={maxHpValue}
 				/>
 
 				<div className='hp-divider-wrapper'>
