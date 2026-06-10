@@ -590,6 +590,8 @@ textarea::-webkit-scrollbar-thumb:hover {
 	padding-bottom: 0 !important;
 	display: inline-flex !important;
 	align-items: center !important;
+	width: 60px;
+	min-width: 60px;
 }
 
 .stats-container.combat-row > .stat-container,
@@ -650,6 +652,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 	align-self: stretch;
 	padding-top: 24px;
 	user-select: none;
+	padding-left: 5px;
 }
 
 .max-hp-text {
@@ -677,8 +680,8 @@ textarea::-webkit-scrollbar-thumb:hover {
 .hp-mod-controls > :first-child,
 .hp-mod-controls > :last-child {
 	width: 60px !important;
-	min-width: 60px !important;
-	max-width: 70px !important;
+	min-width: 40px !important;
+	max-width: 60px !important;
 }
 
 .hp-mod-controls > div:first-child,
@@ -691,19 +694,11 @@ textarea::-webkit-scrollbar-thumb:hover {
 	align-items: flex-end !important;
 }
 
-.form-actions {
-	display: flex !important;
-	flex-direction: row !important;
-	justify-content: space-between !important;
-	margin-top: 5px !important;
-
-	width: 100% !important;
-	box-sizing: border-box !important;
-}
-
 .set-max-hp-btn,
 .confirm-btn,
-.cancel-btn {
+.cancel-btn,
+.damage-btn,
+.heal-btn {
 	display: inline-flex !important;
 	justify-content: center !important;
 	align-items: center !important;

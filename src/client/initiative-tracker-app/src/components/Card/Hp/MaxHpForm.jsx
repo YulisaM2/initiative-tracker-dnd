@@ -110,10 +110,10 @@ export const MaxHpForm = ({
 	}
 
 	return (
-		<div className='stat-container'>
+		<div className='stat-container max-hp-display-mode'>
 			<div className='stat-label'>Max HP</div>
 			<form onSubmit={handleMaxHpSubmit}>
-				<div className='form-actions'>
+				<div className='form-actions hp-mod-controls'>
 					<button
 						type='button'
 						className='cancel-btn'
