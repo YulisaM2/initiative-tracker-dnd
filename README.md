@@ -5,8 +5,18 @@ Consists of:
 1. Node.js + Express for backend.
 2. Mongodb + Mongoose for storage.
 3. React/Vite for frontend.
+<img src="src/view-example.png" width="600">
 
-For solution to work, please make sure you have npm and node installed.
+For solution to work, **please** make sure you **have npm and node installed**.
+
+# Features
+1. Adding character cards that auto save + validate data is valid.
+2. Cards can be dragged and dropped like sticky notes.
+3. Automatic heal/damage that considers temporal HP as well.
+4. If selected a card and then clicked on one of the color themes, role is updated (only cosmetic for now)
+5. Lock/Unlock dragging of grid, also known as panning.
+6. Notes expand to acommodate text, with a limit defined (turns into scroll)
+7. Delete a character card or delete all.
 
 # Instructions
 ## Install packages in client folder
