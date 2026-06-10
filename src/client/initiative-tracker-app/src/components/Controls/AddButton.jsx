@@ -30,6 +30,7 @@ export const AddButton = () => {
 				payload,
 			);
 			setCharacters((prevState) => [response.data, ...prevState]);
+			toast.success("Created new character card!");
 		} catch (error) {
 			const cleanMsg = extractApiErrorMessage(error);
 			toast.error(cleanMsg);

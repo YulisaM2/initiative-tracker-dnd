@@ -38,7 +38,7 @@ const Card = ({ character }) => {
 	const hasHeroicInsp = character?.hasHeroicInsp || "";
 	const characterNotes = character?.notes || "";
 	const characterMaxHp = character?.combatHighlights?.maxHitPoint || "";
-	const characterCurrHp = character?.combatHighlights?.currHitPoint || "";
+	const characterCurrHp = character?.combatHighlights?.currHitPoint || 0;
 	const characterTempHp = character?.combatHighlights?.tempHitPoint || "";
 
 	// Setup for drag and drop
@@ -255,7 +255,7 @@ const Card = ({ character }) => {
 					<div className='stat-label'>Bonus</div>
 					<div className='bonus-row'>
 						<Bonus
-							className='bardic-insp-bttn react-transform-component-no-drag'
+							className='bardic-insp-btn react-transform-component-no-drag'
 							bonusName='hasBardicInsp'
 							defaultValue={hasBardicInsp}
 							url={import.meta.env.VITE_API_BARDIC_INSPIRATION_URL}
@@ -263,7 +263,7 @@ const Card = ({ character }) => {
 							onLoadingChange={handleFieldLoading}
 						></Bonus>
 						<Bonus
-							className='heroic-insp-bttn react-transform-component-no-drag'
+							className='heroic-insp-btn react-transform-component-no-drag'
 							bonusName='hasHeroicInsp'
 							defaultValue={hasHeroicInsp}
 							url={import.meta.env.VITE_API_HEROIC_INSPIRATION_URL}

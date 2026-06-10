@@ -34,14 +34,7 @@ export const Theme = ({ theme }) => {
 			const contractValidation = CharacterContract.safeParse(testPayload);
 
 			// If invalid, stop
-			if (
-				handleContractValidation(
-					contractValidation,
-					"role",
-					onLoadingChange,
-					toast,
-				)
-			) {
+			if (handleContractValidation(contractValidation, "role", toast)) {
 				return;
 			}
 
@@ -67,7 +60,7 @@ export const Theme = ({ theme }) => {
 
 					// Ping db
 					const response = await axios.put(
-						`${import.meta.env.VITE_API_CHAR_URL}/${selectedCharacter._id}`, // 1. URL
+						`${import.meta.env.VITE_API_CHAR_URL}/${selectedCharacter._id}`,
 						payload,
 					);
 				} catch (error) {
@@ -78,14 +71,8 @@ export const Theme = ({ theme }) => {
 
 			updateCardTheme();
 		} catch (error) {
-			const backendMessage =
-				error.response?.data?.errors?.[`combatHighlights.${statName}`]
-					?.message ||
-				error.response?.data?.message ||
-				error.message;
-
-			// 2. Pop up the precise error message (e.g., "Current hit points cannot exceed...")
-			toast.error(backendMessage);
+			const cleanMsg = extractApiErrorMessage(error);
+			toast.error(cleanMsg);
 		}
 	};
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export const formatToNumber = (val) => {
-	return val === undefined || val === null ? "" : String(val);
+	return val === undefined || val === null ? 0 : String(val);
 };
 
 export const cleanNumber = (inputValue, currentValue, maxLength) => {

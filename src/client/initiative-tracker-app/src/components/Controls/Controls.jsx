@@ -20,7 +20,7 @@ const Controls = () => {
 				onClick={() => setScreenDrag(!enableScreenDrag)}
 				className={`btn-circle`}
 			>
-				{enableScreenDrag ? <GrabActive /> : <GrabLocked />}
+				{enableScreenDrag ? <GrabLocked /> : <GrabActive />}
 			</div>
 		</div>
 	);

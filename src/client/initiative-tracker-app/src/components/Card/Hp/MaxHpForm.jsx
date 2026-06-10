@@ -100,7 +100,7 @@ export const MaxHpForm = ({
 			<div className='stat-container'>
 				<div className='stat-label'>Max HP</div>
 				<button
-					className={`set-max-hp-bttn stat ${className || ""}`}
+					className={`set-max-hp-btn stat ${className || ""}`}
 					onClick={() => setMaxHp(true)}
 				>
 					Set
@@ -110,13 +110,13 @@ export const MaxHpForm = ({
 	}
 
 	return (
-		<div className='stat-container'>
+		<div className='stat-container max-hp-display-mode'>
 			<div className='stat-label'>Max HP</div>
 			<form onSubmit={handleMaxHpSubmit}>
-				<div className='form-actions'>
+				<div className='form-actions hp-mod-controls'>
 					<button
 						type='button'
-						className='cancel-bttn'
+						className='cancel-btn'
 						onClick={() => setMaxHp(false)}
 					>
 						Cancel
@@ -130,7 +130,7 @@ export const MaxHpForm = ({
 						value={value}
 						onChange={handleInputChange}
 					/>
-					<button type='submit' className='confirm-bttn'>
+					<button type='submit' className='confirm-btn'>
 						Confirm
 					</button>
 				</div>
