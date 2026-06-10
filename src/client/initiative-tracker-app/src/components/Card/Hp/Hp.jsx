@@ -8,7 +8,7 @@ import { CardContext } from "../../../context/CardContext";
 import { DELAY_SPINNER_TRIGGER } from "../../../assets/constants";
 import { extractApiErrorMessage } from "../helpers/Card.utils";
 
-export const MaxHp = ({
+export const Hp = ({
 	id,
 	className,
 	defaultValue,

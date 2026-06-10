@@ -10,7 +10,7 @@ import {
 import { DeleteButton } from "../../components/Controls/DeleteButton";
 import { Stat } from "./Stat";
 import { Bonus } from "./Bonus";
-import { MaxHp } from "./Hp/MaxHp";
+import { Hp } from "./Hp/Hp";
 import Notes from "./Notes";
 import Spinner from "../../icons/Spinner";
 import { CardContext } from "../../context/CardContext";
@@ -223,7 +223,7 @@ const Card = ({ character }) => {
 					onKeyDown={(e) => e.stopPropagation()}
 				></textarea>
 				<div className='stats-container health-row'>
-					<MaxHp
+					<Hp
 						className='react-transform-component-no-drag'
 						name='maxHitPoint'
 						defaultValue={characterMaxHp}
