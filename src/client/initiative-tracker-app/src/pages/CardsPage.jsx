@@ -28,7 +28,7 @@ const CardsPage = () => {
 						"button",
 						"react-transform-component-no-drag",
 					],
-					boundsPaddingX: 300, // Limit in pxs
+					boundsPaddingX: 500, // Limit in pxs
 					boundsPaddingy: 300,
 				}}
 				zooming={{
