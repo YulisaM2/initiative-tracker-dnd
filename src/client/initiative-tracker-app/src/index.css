@@ -26,26 +26,6 @@
 	--stat-label-color: #212529;
 }
 
-.page-wrapper {
-	display: flex;
-	width: 100vw;
-	height: 100vh;
-	position: relative;
-	box-sizing: border-box;
-	overflow: hidden;
-}
-
-.card-board-grid {
-	grid-template-columns: repeat(4, 340px);
-	grid-template-rows: repeat(2, auto);
-	gap: 40px;
-
-	width: 1600px;
-	height: 1200px;
-	padding: 100px;
-	box-sizing: border-box;
-}
-
 body {
 	font-family: var(--font-family);
 	padding: 0;
@@ -62,6 +42,12 @@ body {
 	position: relative;
 	overflow: auto;
 }
+
+/* =============================================
+
+			G E N E R I C
+
+================================================*/
 
 textarea,
 input,
@@ -157,6 +143,12 @@ textarea::-webkit-scrollbar-thumb:hover {
 	box-sizing: border-box;
 }
 
+/* =============================================
+
+			A N I M A T I O N S
+
+================================================*/
+
 @keyframes spin {
 	from {
 		transform: rotate(0deg);
@@ -176,6 +168,12 @@ textarea::-webkit-scrollbar-thumb:hover {
 	gap: 5px;
 	margin-right: auto;
 }
+
+/* =============================================
+
+			C O N T R O L S (MENU)
+
+================================================*/
 
 #controls {
 	display: flex;
@@ -198,6 +196,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 		0 16px 16px hsl(0deg 0% 0% / 0.075);
 	z-index: 10000;
 }
+
 .theme {
 	background-color: grey;
 	height: 40px;
@@ -388,6 +387,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 .hidden-card .card-body {
 	padding: 1em;
 }
+
 .player-card textarea,
 .hidden-card textarea,
 .player-card .card-header,
@@ -395,6 +395,7 @@ textarea::-webkit-scrollbar-thumb:hover {
 	letter-spacing: 0.02em;
 	line-height: 1.6;
 }
+
 .player-card svg,
 .player-card svg path,
 .hidden-card svg,
@@ -402,6 +403,13 @@ textarea::-webkit-scrollbar-thumb:hover {
 	fill: currentColor !important;
 	stroke: currentColor !important;
 }
+
+/* =============================================
+
+			I N P U T S
+
+================================================*/
+
 .card-body textarea.character-name-input {
 	font-weight: 700;
 	font-size: 22px;
@@ -423,6 +431,19 @@ textarea::-webkit-scrollbar-thumb:hover {
 	background-color: transparent;
 	outline: none;
 }
+
+.card-body input[inputmode="numeric"] {
+	background-color: var(--stat-bg-color);
+	color: var(--stat-text-color);
+	border: 1px solid #35363e;
+	outline: none;
+}
+
+/* =============================================
+
+			B U T T O N S
+
+================================================*/
 
 .btn-circle {
 	background-color: rgba(107, 107, 107, 1);
@@ -455,41 +476,6 @@ textarea::-webkit-scrollbar-thumb:hover {
 	transition: transform 0.2s ease;
 }
 
-.stat-label {
-	font-size: 15px !important;
-	font-weight: 700 !important;
-	margin-bottom: 4px !important;
-	text-transform: uppercase !important;
-	letter-spacing: 0.05em !important;
-	text-align: center !important;
-	color: var(--stat-label-color);
-}
-
-.stat {
-	width: 50px;
-	height: 30px;
-	text-align: center;
-	border: none;
-	border-radius: 4px;
-	box-sizing: border-box;
-}
-
-.stat:focus,
-.stat:active {
-	outline: none;
-	border: none;
-}
-
-.bonus-row {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	margin-top: 0px;
-	margin-bottom: 10px;
-}
-
 .bonus-btn,
 .bonus-btn svg {
 	background-color: transparent !important;
@@ -515,6 +501,140 @@ textarea::-webkit-scrollbar-thumb:hover {
 	fill: var(--heroic-active-color) !important;
 	stroke: none !important;
 	filter: url(#red-glow) !important;
+}
+
+.set-max-hp-btn,
+.confirm-btn,
+.cancel-btn,
+.damage-btn,
+.heal-btn {
+	display: inline-flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	text-align: center !important;
+	width: 50px !important;
+	height: 28px !important;
+	margin: 0 auto !important;
+}
+
+.confirm-btn,
+.cancel-btn,
+.set-max-hp-btn,
+.damage-btn,
+.heal-btn,
+input[inputmode="numeric"],
+input.stat {
+	height: 28px;
+	width: 100% !important;
+	max-width: 60px !important;
+
+	border-radius: 4px;
+	box-sizing: border-box;
+	font-size: 13px;
+	font-weight: 600;
+}
+
+.confirm-btn,
+.cancel-btn,
+.damage-btn,
+.set-max-hp-btn,
+.heal-btn {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-width: 28px;
+	padding: 0 10px;
+	cursor: pointer;
+	border: none;
+	color: #e0e0e0;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
+	transition:
+		transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+		box-shadow 0.3s ease,
+		background-color 0.3s ease;
+}
+
+.cancel-btn,
+.damage-btn {
+	background-color: #7a1c1c;
+	font-size: 10px;
+}
+
+.cancel-btn:hover,
+.damage-btn:hover {
+	background-color: #5a1414;
+}
+
+.confirm-btn,
+.set-max-hp-btn,
+.heal-btn {
+	background-color: #1e4620;
+	font-size: 10px;
+}
+
+.confirm-btn:hover,
+.set-max-hp-btn:hover,
+.heal-btn:hover {
+	background-color: #143216;
+}
+
+.delete-all-btn {
+	margin-top: 10px;
+	margin-right: 10px;
+	right: 0;
+	z-index: 999;
+	position: absolute;
+}
+
+/* =============================================
+
+			C O N T A I N E R S
+
+================================================*/
+
+.page-wrapper {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+
+.card-board-grid {
+	grid-template-columns: repeat(4, 340px);
+	grid-template-rows: repeat(2, auto);
+	gap: 40px;
+
+	width: 1600px;
+	height: 1200px;
+	padding: 100px;
+	box-sizing: border-box;
+}
+
+.stat {
+	width: 50px;
+	height: 30px;
+	text-align: center;
+	border: none;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.stat:focus,
+.stat:active {
+	outline: none;
+	border: none;
+}
+
+.bonus-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-top: 0px;
+	margin-bottom: 10px;
 }
 
 .notes-container {
@@ -620,13 +740,6 @@ textarea::-webkit-scrollbar-thumb:hover {
 	padding-left: 5px;
 }
 
-.max-hp-text {
-	font-size: 15px;
-	color: var(--stat-bg-color);
-	line-height: 1;
-	font-weight: bold;
-}
-
 .hp-mod-controls {
 	display: flex !important;
 	flex-direction: row !important;
@@ -659,89 +772,25 @@ textarea::-webkit-scrollbar-thumb:hover {
 	align-items: flex-end !important;
 }
 
-.set-max-hp-btn,
-.confirm-btn,
-.cancel-btn,
-.damage-btn,
-.heal-btn {
-	display: inline-flex !important;
-	justify-content: center !important;
-	align-items: center !important;
+/* =============================================
+
+			L A B E L S (Titles)
+
+================================================*/
+
+.stat-label {
+	font-size: 15px !important;
+	font-weight: 700 !important;
+	margin-bottom: 4px !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.05em !important;
 	text-align: center !important;
-	width: 50px !important;
-	height: 28px !important;
-	margin: 0 auto !important;
+	color: var(--stat-label-color);
 }
 
-.confirm-btn,
-.cancel-btn,
-.set-max-hp-btn,
-.damage-btn,
-.heal-btn,
-input[inputmode="numeric"],
-input.stat {
-	height: 28px;
-	width: 100% !important;
-	max-width: 60px !important;
-
-	border-radius: 4px;
-	box-sizing: border-box;
-	font-size: 13px;
-	font-weight: 600;
-}
-
-.confirm-btn,
-.cancel-btn,
-.damage-btn,
-.set-max-hp-btn,
-.heal-btn {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-width: 28px;
-	padding: 0 10px;
-	cursor: pointer;
-	border: none;
-	color: #e0e0e0;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4) !important;
-	transition:
-		transform 0.3s cubic-bezier(0.25, 1, 0.5, 1),
-		box-shadow 0.3s ease,
-		background-color 0.3s ease;
-}
-
-.card-body input[inputmode="numeric"] {
-	background-color: var(--stat-bg-color);
-	color: var(--stat-text-color);
-	border: 1px solid #35363e;
-	outline: none;
-}
-
-.cancel-btn,
-.damage-btn {
-	background-color: #7a1c1c;
-	font-size: 10px;
-}
-
-.cancel-btn:hover,
-.damage-btn:hover {
-	background-color: #5a1414;
-}
-
-.confirm-btn,
-.set-max-hp-btn,
-.heal-btn {
-	background-color: #1e4620;
-	font-size: 10px;
-}
-
-.confirm-btn:hover,
-.set-max-hp-btn:hover,
-.heal-btn:hover {
-	background-color: #143216;
-}
-
-.delete-all-btn {
-	margin-top: 10px;
-	margin-right: 10px;
+.max-hp-text {
+	font-size: 15px;
+	color: var(--stat-bg-color);
+	line-height: 1;
+	font-weight: bold;
 }
