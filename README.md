@@ -46,6 +46,11 @@ VITE_API_MAX_HP_URL=<br>
 VITE_API_CURR_HP_URL=<br>
 VITE_API_MODIFY_HP_URL=<br>
 
+# Running Solution
+## OPTION 1 (RECOMMENDED): RunApps script
+1. Inside src/scripts `./RunApps.ps1`
+
+## OPTION 2: Run everything separately
 ## Run the backend server
 1. Inside server `node index.js`
    
