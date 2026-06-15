@@ -29,7 +29,7 @@ const CardsPage = () => {
 						"react-transform-component-no-drag",
 					],
 					boundsPaddingX: 500, // Limit in pxs
-					boundsPaddingy: 300,
+					boundsPaddingy: 700,
 				}}
 				zooming={{
 					disabled: !enableScreenDrag,

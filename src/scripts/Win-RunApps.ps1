@@ -11,7 +11,7 @@ $BackendApp = Start-Process powershell -ArgumentList "-Command", "Set-Location -
 
 # Starting the client for UI interaction
 Write-Host "Starting frontend..."
-$FrontEndApp = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path '../client/initiative-tracker-app/'; npm run dev" -PassThru
+$FrontendApp = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path '../client/initiative-tracker-app/'; npm run dev" -PassThru
 
 Write-Host "Solution launched succesfully!" -ForegroundColor Green
 Read-Host "Press ENTER on this window to stop solution."
@@ -29,6 +29,6 @@ function Remove-ProcessTree ([int]$ParentId) {
 
 Remove-ProcessTree -ParentId $BindingDB.Id
 Remove-ProcessTree -ParentId $BackendApp.Id
-Remove-ProcessTree -ParentId $FrontEndApp.Id
+Remove-ProcessTree -ParentId $FrontendApp.Id
 
 Write-Host "Solution stopped succesfully!" -ForegroundColor Green

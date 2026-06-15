@@ -1,13 +1,10 @@
 # initiative-tracker-dnd
 
 Small web app for initiative and stats management during DnD combat, based on 2024 Player and Monster Hanbooks. It has local persistent storage.
-Consists of:
-1. Node.js + Express for backend.
-2. Mongodb + Mongoose for storage.
-3. React/Vite for frontend.
+
 <img src="src/view-example.png" width="600">
 
-For solution to work, **please** make sure you **have** the following **installed: **
+For solution to work, **please** make sure you **have** the following **installed:**
 1. [NodeJS](https://nodejs.org/en/download)
 2. [MongoDB](https://www.mongodb.com/try/download/community)
 
@@ -20,7 +17,7 @@ For solution to work, **please** make sure you **have** the following **installe
 6. Notes expand to acommodate text, with a limit defined (turns into scroll)
 7. Delete a character card or delete all.
 
-# Instructions
+# Setting up your environment
 ## Install packages in client folder
 1. Go to src/client/initiative-tracker-app
 2. Run `npm install`
@@ -47,19 +44,30 @@ VITE_API_CURR_HP_URL=<br>
 VITE_API_MODIFY_HP_URL=<br>
 
 # Running Solution
-## OPTION 1 (RECOMMENDED): RunApps script
-1. Inside src/scripts `./RunApps.ps1`
+## OPTION 1 (RECOMMENDED): RunApps scripts
+## For MacOs
+1. Go to src/scripts
+2. Run `chmod +x ./MacOS-RunApps.sh` to create executable. No need to rerun ever after success.
+2. Run `./MacOS-RunApps.sh`
+
+>[!WARNING]
+> Processes are stopped but windows can't be closed unless you update your terminal settings to close shell when it exits. For more information on how look [here](https://support.apple.com/guide/terminal/change-profiles-shell-settings-trmlshll/2.15/mac/26). Otherwise, close manually.
+
+## For Windows
+1. Go to src/script 
+2. Run `./Win-RunApps.ps1`
 
 ## OPTION 2: Run everything separately
 ## Run the backend server
-1. Inside server `node index.js`
+1. Go to src/server
+2. Run `node index.js`
    
 You should see the console logging the port in which the server is running, the address in which Mongo is connected, and that the app is succesfully running.
 Any query to the database will be logged here.
 
 ## Run client
-1. Inside initiative-tracker-app  `npm run dev`
-   
-You should see the address to which the react app was launched. Use it to access the frontend of the solution. 
+1. Go to src/client/initiative-tracker-app
+2. Run `npm run dev`
 
-Currently working on a scripts for Windows + MacOS to automate launching full solution. 
+> [!IMPORTANT]
+> You should see the IP address to which the react app was launched. Copy the link and open it in your prefer browser. It should look something like http://localhost:port_number
