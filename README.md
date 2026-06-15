@@ -7,7 +7,9 @@ Consists of:
 3. React/Vite for frontend.
 <img src="src/view-example.png" width="600">
 
-For solution to work, **please** make sure you **have npm and node installed**.
+For solution to work, **please** make sure you **have** the following **installed: **
+1. [NodeJS](https://nodejs.org/en/download)
+2. [MongoDB](https://www.mongodb.com/try/download/community)
 
 # Features
 1. Adding character cards that auto save + validate data is valid.
@@ -44,7 +46,7 @@ VITE_API_MAX_HP_URL=<br>
 VITE_API_CURR_HP_URL=<br>
 VITE_API_MODIFY_HP_URL=<br>
 
-## Run the server
+## Run the backend server
 1. Inside server `node index.js`
    
 You should see the console logging the port in which the server is running, the address in which Mongo is connected, and that the app is succesfully running.
@@ -54,3 +56,5 @@ Any query to the database will be logged here.
 1. Inside initiative-tracker-app  `npm run dev`
    
 You should see the address to which the react app was launched. Use it to access the frontend of the solution. 
+
+Currently working on a scripts for Windows + MacOS to automate launching full solution. 
