@@ -4,14 +4,14 @@
 
 Write-Host "Starting backend..."
 # Starting mongoDB server that listens only to applications running on same machine and storing it in data folder
-$BindingDB = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path './server'; mongod --bind_ip=127.0.0.1 --dbpath=data" -PassThru
+$BindingDB = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path '../server'; mongod --bind_ip=127.0.0.1 --dbpath=data" -PassThru
 
 # Starting server that manages DB
-$BackendApp = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path './server'; node ./index.js" -PassThru
+$BackendApp = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path '../server'; node ./index.js" -PassThru
 
 # Starting the client for UI interaction
 Write-Host "Starting frontend..."
-$FrontEndApp = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path './client/initiative-tracker-app/'; npm run dev" -PassThru
+$FrontEndApp = Start-Process powershell -ArgumentList "-Command", "Set-Location -Path '../client/initiative-tracker-app/'; npm run dev" -PassThru
 
 Write-Host "Solution launched succesfully!" -ForegroundColor Green
 Read-Host "Press ENTER on this window to stop solution."
