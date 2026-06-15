@@ -57,6 +57,9 @@ VITE_API_MODIFY_HP_URL=<br>
 1. Go to src/script 
 2. Run `./Win-RunApps.ps1`
 
+>[!WARNING]
+> You might have to run a command to set the execution policy, basically allowing scripts that you downloaded to be run. Please look at [this](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.security/set-executionpolicy?view=powershell-7.6#:~:text=Set%2DExecutionPolicy%20%2DExecutionPolicy%20RemoteSigned%20%2DScope%20LocalMachine) for documentation on how to do it.
+
 ## OPTION 2: Run everything separately
 ## Run the backend server
 1. Go to src/server
