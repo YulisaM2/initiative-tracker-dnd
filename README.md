@@ -7,6 +7,7 @@ Small web app for initiative and stats management during DnD combat, based on 20
 For solution to work, **please** make sure you **have** the following **installed:**
 1. [NodeJS](https://nodejs.org/en/download)
 2. [MongoDB](https://www.mongodb.com/try/download/community)
+3. [MongoShell](https://www.mongodb.com/try/download/shell) example video on how to do this [here](https://www.youtube.com/watch?v=kErtiffpQpE). To make sure it works, run `mongod` on terminal and see if it recognizes it.
 
 # Features
 1. Adding character cards that auto save + validate data is valid.
